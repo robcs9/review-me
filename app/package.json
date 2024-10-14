@@ -44,6 +44,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@floating-ui/dom": "1.6.11"
+    "@floating-ui/dom": "1.6.11",
+    "app": "file:",
+    "iconify-icon": "^2.1.0"
   }
 }
