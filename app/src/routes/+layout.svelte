@@ -38,4 +38,9 @@
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />
+	<svelte:fragment slot="footer">
+		<div class="flex justify-center m-4">
+			<p>&copy; 2024, UFPE</p>
+		</div>
+	</svelte:fragment>
 </AppShell>
