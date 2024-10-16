@@ -10,13 +10,46 @@
 	import { RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 
-	let qualidade = 0;
-	let cordialidade = 0; // da equipe
-	let apresentacao = 0; // dos pratos
-	let temperatura = 0; // dos alimentos
-	let sabor = 0; // sabor/tempero dos alimentos
-	let higiene = 0; // limpeza/higiene
-	let comentario = ''; // sugestão ou elogio
+	let qualidadeField = 0;
+
+	let fields = [
+		{
+			name: 'cordialidade',
+			current: 0,
+			max: 5,
+			label: 'Cordialidade da equipe'
+		},
+		{
+			name: 'apresentacao',
+			current: 0,
+			max: 5,
+			label: 'Apresentação dos pratos'
+		},
+		{
+			name: 'temperatura',
+			current: 0,
+			max: 5,
+			label: 'Temperatura dos alimentos'
+		},
+		{
+			name: 'sabor',
+			current: 0,
+			max: 5,
+			label: 'Sabor/tempero dos alimentos'
+		},
+		{
+			name: 'higiene',
+			current: 0,
+			max: 5,
+			label: 'Limpeza/higiene em geral'
+		}
+	];
+
+	let comentario = {
+		name: 'Comentário',
+		value: '',
+		label: 'Alguma sugestão, reclamação ou elogio?'
+	};
 
 	let radio = {
 		items: [
@@ -62,14 +95,9 @@
 		}
 	};
 
-	let satisfaction = {
-		current: 0,
-		max: 5,
-		label: "Cordialidade da equipe",
-	};
-	
-	const iconClick = (event: CustomEvent<{ index: number }>): void => {
-		satisfaction.current = event.detail.index;
+	const iconClick = (idx: number) => (event: CustomEvent<{ index: number }>): void => {
+		/* console.dir(idx) */
+		fields[idx].current = event.detail.index;
 	};
 	const capitalizeStr = (s: string) => `${s.charAt(0).toUpperCase()}${s.slice(1)}`;
 	const formatRadioName = (s: string) => {
@@ -79,43 +107,44 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
-	$: if (qualidade > 1) {
+	$: if (qualidadeField > 1) {
 		toastStore.trigger(toast);
 	}
 
 	// $: console.log(qualidade.current)
+	/* console.log(...Object.values(fields)) */
 </script>
 
 <div class="flex flex-col gap-2">
 	<label for="">Qualidade da sua refeição hoje</label>
 	<RadioGroup class="inline-flex gap-2">
 		{#each radio.items as item}
-			<RadioItem class="" bind:group={qualidade} {...item.props}>
+			<RadioItem class="" bind:group={qualidadeField} {...item.props}>
 				<iconify-icon icon={item.icon} {...radio.iconSize}></iconify-icon>
 				<p>{formatRadioName(item.props.name)}</p>
 			</RadioItem>
 		{/each}
 	</RadioGroup>
 
-	<label for="">{satisfaction.label}</label>
-	<!-- Labels for fields 
-		Cordialidade da equipe
-		Apresentacao dos pratos
-		Temperatura dos alimentos
-		Sabor/tempero dos alimentos
-		Limpeza e higiene em geral
-		Alguma sugestão, reclamação ou elogio?
-	-->
+	{#each fields as field, idx}
+		<label for="">{field.label}</label>
+		<!-- Fix flinching icons during interaction (replace icons?) -->
+		<Ratings bind:value={fields[idx].current} interactive on:icon={iconClick(idx)} max={field.max}>
+			<svelte:fragment slot="empty">
+				<!-- <iconify-icon icon="ph:star-duotone"></iconify-icon> -->
+				<iconify-icon height="2em" icon="meteocons:star"></iconify-icon>
+			</svelte:fragment>
+			<svelte:fragment slot="full">
+				<!-- <iconify-icon icon="ph:star-fill"></iconify-icon> -->
+				<iconify-icon height="2em" icon="meteocons:star-fill"></iconify-icon>
+			</svelte:fragment>
+		</Ratings>
+	{/each}
+	
+	<label for="">{comentario.label}</label>
+	<textarea name="" id="" placeholder={"Deixe a sua opinião..."}></textarea>
 
-	<!-- Fix flinching icons during interaction (replace icons?) -->
-	<Ratings bind:value={satisfaction.current} interactive on:icon={iconClick} max={satisfaction.max}>
-		<svelte:fragment slot="empty">
-			<iconify-icon icon="ph:star-duotone"></iconify-icon>
-		</svelte:fragment>
-		<svelte:fragment slot="full">
-			<iconify-icon icon="ph:star-fill"></iconify-icon>
-		</svelte:fragment>
-	</Ratings>
+	<button type="button" class="btn variant-filled-primary">Enviar</button>
 </div>
 
 <!-- <div class="flex flex-col gap-2 border">
