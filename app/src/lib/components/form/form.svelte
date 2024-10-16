@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { type ToastSettings, getToastStore } from '@skeletonlabs/skeleton';
 	const toastStore = getToastStore();
-	const toast: ToastSettings = {
-		message: 'test toast',
-		background: 'variant-filled-success',
-		timeout: 3000
-	};
 
 	import { RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
@@ -95,10 +90,12 @@
 		}
 	};
 
-	const iconClick = (idx: number) => (event: CustomEvent<{ index: number }>): void => {
-		/* console.dir(idx) */
-		fields[idx].current = event.detail.index;
-	};
+	const iconClick =
+		(idx: number) =>
+		(event: CustomEvent<{ index: number }>): void => {
+			/* console.dir(idx) */
+			fields[idx].current = event.detail.index;
+		};
 	const capitalizeStr = (s: string) => `${s.charAt(0).toUpperCase()}${s.slice(1)}`;
 	const formatRadioName = (s: string) => {
 		const splitStr = s.split('-');
@@ -106,10 +103,20 @@
 			? `${capitalizeStr(splitStr[0])} ${capitalizeStr(splitStr[1])}`
 			: `${capitalizeStr(splitStr[0])}`;
 	};
-
-	$: if (qualidadeField > 1) {
+	const notify = (msg: string) => {
+		const toast: ToastSettings = {
+			message: msg,
+			background: 'variant-filled-success',
+			timeout: 3000
+		};
 		toastStore.trigger(toast);
 	}
+	const handleSubmit = () => {
+		notify("Obrigado pela sua avaliação! Volte sempre! <3")
+	};
+	/* $: if (qualidadeField > 1) {
+		toastStore.trigger(toast);
+	} */
 
 	// $: console.log(qualidade.current)
 	/* console.log(...Object.values(fields)) */
@@ -140,11 +147,11 @@
 			</svelte:fragment>
 		</Ratings>
 	{/each}
-	
-	<label for="">{comentario.label}</label>
-	<textarea name="" id="" placeholder={"Deixe a sua opinião..."}></textarea>
 
-	<button type="button" class="btn variant-filled-primary">Enviar</button>
+	<label for="">{comentario.label}</label>
+	<textarea name="" id="" placeholder={'Deixe a sua opinião...'}></textarea>
+
+	<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Enviar</button>
 </div>
 
 <!-- <div class="flex flex-col gap-2 border">
