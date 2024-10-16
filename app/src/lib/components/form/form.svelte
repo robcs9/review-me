@@ -113,9 +113,9 @@
 			timeout: 3000
 		};
 		toastStore.trigger(toast);
-	}
+	};
 	const handleSubmit = () => {
-		notify("Obrigado pela sua avaliação! Volte sempre! <3")
+		notify('Obrigado pela sua avaliação! Volte sempre! <3');
 	};
 	/* $: if (qualidadeField > 1) {
 		toastStore.trigger(toast);
@@ -128,35 +128,35 @@
 <div class="flex flex-col gap-2 p-4 border border-s-violet-500">
 	<!-- <form class="" action=""> -->
 
-		<label for="">Qualidade da sua refeição hoje</label>
-		<RadioGroup class="inline-flex gap-2">
-			{#each radio.items as item}
+	<label for="">Qualidade da sua refeição hoje</label>
+	<RadioGroup class="inline-flex gap-2">
+		{#each radio.items as item}
 			<RadioItem class="" bind:group={qualidadeField} {...item.props}>
 				<iconify-icon icon={item.icon} {...radio.iconSize}></iconify-icon>
 				<p>{formatRadioName(item.props.name)}</p>
 			</RadioItem>
-			{/each}
-		</RadioGroup>
-		
-		{#each fields as field, idx}
+		{/each}
+	</RadioGroup>
+
+	{#each fields as field, idx}
 		<label for="">{field.label}</label>
 		<!-- Fix flinching icons during interaction (replace icons?) -->
 		<Ratings bind:value={fields[idx].current} interactive on:icon={iconClick(idx)} max={field.max}>
 			<svelte:fragment slot="empty">
 				<!-- <iconify-icon icon="ph:star-duotone"></iconify-icon> -->
-				 <StarIcon />
+				<StarIcon />
 			</svelte:fragment>
 			<svelte:fragment slot="full">
 				<!-- <iconify-icon icon="ph:star-fill"></iconify-icon> -->
 				<StarFillIcon />
 			</svelte:fragment>
 		</Ratings>
-		{/each}
-		
-		<label for="">{comentario.label}</label>
-		<textarea name="" id="" placeholder={'Deixe sua opinião...'}></textarea>
-		
-		<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Enviar</button>
+	{/each}
+
+	<label for="">{comentario.label}</label>
+	<textarea name="" id="" placeholder={'Deixe sua opinião...'}></textarea>
+
+	<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Enviar</button>
 	<!-- </form> -->
 </div>
 
