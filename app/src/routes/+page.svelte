@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 	import Form from '$lib/components/form/form.svelte';
 	import 'iconify-icon';
-	
-	export let data;
-	console.dir(data);
+	// import type { PageData } from './$types.js';
+	// export let data: PageData;
+	import type { ActionData } from './$types';
+	export let form: ActionData;
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -13,6 +14,6 @@
 			<iconify-icon icon="noto:red-heart" height="0.8em"></iconify-icon>
 			<h3 class="h3 mt-2">Avalie-nos através da enquete abaixo!</h3>
 		</h1>
-		<Form />
+		<Form form={form} />
 	</div>
 </div>

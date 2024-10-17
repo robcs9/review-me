@@ -42,7 +42,7 @@
 	];
 
 	let comentario = {
-		name: 'Comentário',
+		name: 'comentario',
 		value: '',
 		label: 'Alguma sugestão, reclamação ou elogio?'
 	};
@@ -114,12 +114,35 @@
 		};
 		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 		console.log('formData: \n', f);
+		// console.log('data: ', data);
+	};
+	// export let data;
+	import { enhance } from '$app/forms';
+	/* import type { ActionData } from '../../../routes/$types'; */
+	export let form//: ActionData;
+	const handleSubmit = () => {
+		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
+		const f = {
+			ratings: ratings,
+			qualidade: qualidadeField,
+			comentario: comentario.value
+		};
+		// form = f;
+		if(form?.success) {
+			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
+		// console.log('formData: \n', f);
+		} else {
+			toastify.success(toastStore, 'Erro!');
+		}
 	};
 </script>
 
-<div class="flex flex-col gap-6 p-4 border border-s-violet-500">
-	<!-- <form class="" action=""> -->
-
+<form
+	method="POST"
+	class="flex flex-col gap-6 p-4 border border-s-violet-500"
+>
+<!-- 	use:enhance={handleSubmit}
+> -->
 	<label for="">
 		<p>QUALIDADE DA SUA REFEIÇÃO HOJE</p>
 		<RadioGroup class="inline-flex gap-2">
@@ -135,11 +158,13 @@
 	{#each fields as field, idx}
 		<label class="" for="">
 			<h4 class="h4">{field.label.toUpperCase()}</h4>
+			<!-- Fix the name attr for every field as well as the unique id for iterated over elements -->
 			<Ratings
 				bind:value={fields[idx].current}
 				interactive
 				on:icon={iconClick(idx)}
 				max={field.max}
+				name={field.name}
 			>
 				<svelte:fragment slot="empty">
 					<StarIcon className="fill-transparent w-8 h-8" />
@@ -154,12 +179,11 @@
 	<label for=""><h4 class="h4">{comentario.label.toUpperCase()}</h4></label>
 	<textarea
 		class="bg-red-100 text-red-800"
-		name=""
-		id=""
+		name={comentario.name}
 		bind:value={comentario.value}
 		placeholder={'Deixe sua opinião...'}
 	></textarea>
 
-	<button type="button" class="btn variant-filled-primary" on:click={handleClick}>Enviar</button>
-	<!-- </form> -->
-</div>
+	<button class="btn variant-filled-primary">Enviar</button>
+</form>
+<!-- </div> -->
