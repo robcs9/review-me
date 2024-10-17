@@ -9,8 +9,6 @@
 
 	// Toast
 	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
-
 	initializeStores();
 </script>
 

@@ -1,14 +1,12 @@
 <script lang="ts">
 	import StarIcon from './star-icon.svelte';
 	import StarFillIcon from './star-fill-icon.svelte';
-
-	import { type ToastSettings, getToastStore } from '@skeletonlabs/skeleton';
-	const toastStore = getToastStore();
-
 	import { RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 
-	let qualidadeField = 0;
+	import * as toastify from '$lib/utils/toastify';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	const toastStore = getToastStore();
 
 	let fields = [
 		{
@@ -49,6 +47,7 @@
 		label: 'Alguma sugestão, reclamação ou elogio?'
 	};
 
+	let qualidadeField = 0;
 	let radio = {
 		items: [
 			{
@@ -96,7 +95,6 @@
 	const iconClick =
 		(idx: number) =>
 		(event: CustomEvent<{ index: number }>): void => {
-			/* console.dir(idx) */
 			fields[idx].current = event.detail.index;
 		};
 	const capitalizeStr = (s: string) => `${s.charAt(0).toUpperCase()}${s.slice(1)}`;
@@ -106,81 +104,62 @@
 			? `${capitalizeStr(splitStr[0])} ${capitalizeStr(splitStr[1])}`
 			: `${capitalizeStr(splitStr[0])}`;
 	};
-	const notify = (msg: string) => {
-		const toast: ToastSettings = {
-			message: msg,
-			background: 'variant-filled-success',
-			timeout: 3000
-		};
-		toastStore.trigger(toast);
-	};
-	const handleSubmit = () => {
-		notify('Obrigado pela sua avaliação! Volte sempre! <3');
-	};
-	/* $: if (qualidadeField > 1) {
-		toastStore.trigger(toast);
-	} */
 
-	// $: console.log(qualidade.current)
-	/* console.log(...Object.values(fields)) */
+	const handleClick = () => {
+		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
+		const f = {
+			ratings: ratings,
+			qualidade: qualidadeField,
+			comentario: comentario.value
+		};
+		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
+		console.log('formData: \n', f);
+	};
 </script>
 
-<div class="flex flex-col gap-2 p-4 border border-s-violet-500">
+<div class="flex flex-col gap-6 p-4 border border-s-violet-500">
 	<!-- <form class="" action=""> -->
 
-	<label for="">Qualidade da sua refeição hoje</label>
-	<RadioGroup class="inline-flex gap-2">
-		{#each radio.items as item}
-			<RadioItem class="" bind:group={qualidadeField} {...item.props}>
-				<iconify-icon icon={item.icon} {...radio.iconSize}></iconify-icon>
-				<p>{formatRadioName(item.props.name)}</p>
-			</RadioItem>
-		{/each}
-	</RadioGroup>
+	<label for="">
+		<p>QUALIDADE DA SUA REFEIÇÃO HOJE</p>
+		<RadioGroup class="inline-flex gap-2">
+			{#each radio.items as item}
+				<RadioItem class="" bind:group={qualidadeField} {...item.props}>
+					<iconify-icon icon={item.icon} {...radio.iconSize}></iconify-icon>
+					<p>{formatRadioName(item.props.name).toUpperCase()}</p>
+				</RadioItem>
+			{/each}
+		</RadioGroup>
+	</label>
 
 	{#each fields as field, idx}
-		<label for="">{field.label}</label>
-		<!-- Fix flinching icons during interaction (replace icons?) -->
-		<Ratings bind:value={fields[idx].current} interactive on:icon={iconClick(idx)} max={field.max}>
-			<svelte:fragment slot="empty">
-				<!-- <iconify-icon icon="ph:star-duotone"></iconify-icon> -->
-				<StarIcon />
-			</svelte:fragment>
-			<svelte:fragment slot="full">
-				<!-- <iconify-icon icon="ph:star-fill"></iconify-icon> -->
-				<StarFillIcon />
-			</svelte:fragment>
-		</Ratings>
+		<label class="" for="">
+			<h4 class="h4">{field.label.toUpperCase()}</h4>
+			<Ratings
+				bind:value={fields[idx].current}
+				interactive
+				on:icon={iconClick(idx)}
+				max={field.max}
+			>
+				<svelte:fragment slot="empty">
+					<StarIcon className="fill-transparent w-8 h-8" />
+				</svelte:fragment>
+				<svelte:fragment slot="full">
+					<StarFillIcon className="fill-yellow-400 w-8 h-8" />
+				</svelte:fragment>
+			</Ratings>
+		</label>
 	{/each}
 
-	<label for="">{comentario.label}</label>
-	<textarea name="" id="" placeholder={'Deixe sua opinião...'}></textarea>
+	<label for=""><h4 class="h4">{comentario.label.toUpperCase()}</h4></label>
+	<textarea
+		class="bg-red-100 text-red-800"
+		name=""
+		id=""
+		bind:value={comentario.value}
+		placeholder={'Deixe sua opinião...'}
+	></textarea>
 
-	<button type="button" class="btn variant-filled-primary" on:click={handleSubmit}>Enviar</button>
+	<button type="button" class="btn variant-filled-primary" on:click={handleClick}>Enviar</button>
 	<!-- </form> -->
 </div>
-
-<!-- <div class="flex flex-col gap-2 border">
-    <label class="flex flex-col" for="comment">
-        Comment
-        <textarea class="form-textarea" name="comment" id="comment" />
-    </label>
-    
-    <div class="">
-        <label for="">
-            Question
-            <label class="flex items-center space-x-2">
-                <input class="radio" type="radio" checked name="radio-direct" value="1" />
-                <p>Option 1</p>
-            </label>
-            <label class="flex items-center space-x-2">
-                <input class="radio" type="radio" name="radio-direct" value="2" />
-                <p>Option 2</p>
-            </label>
-            <label class="flex items-center space-x-2">
-                <input class="radio" type="radio" name="radio-direct" value="3" />
-                <p>Option 3</p>
-            </label>
-        </label>
-    </div>
-</div> -->
