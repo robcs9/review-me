@@ -150,9 +150,9 @@
 <form method="POST" class="flex flex-col gap-6 p-4 border border-s-violet-500">
 	<!-- 	use:enhance={handleSubmit}
 > -->
-	<label for="">
+	<label for="f-qualidade">
 		<p>QUALIDADE DA SUA REFEIÇÃO HOJE</p>
-		<RadioGroup class="inline-flex gap-2">
+		<RadioGroup class="inline-flex gap-2" id="f-qualidade">
 			{#each qualidade.items as item}
 				<RadioItem class="" bind:group={qualidade.current} {...item.props} name={qualidade.name}>
 					<iconify-icon icon={item.icon} {...qualidade.iconSize}></iconify-icon>
@@ -163,7 +163,8 @@
 	</label>
 
 	{#each fields as field, idx}
-		<label class="" for="">
+		<label for={`f-${field.name}`}>
+		<!-- <label for={}> -->
 			<h4 class="h4">{field.label.toUpperCase()}</h4>
 			<!-- Fix the name attr for every field as well as the unique id for iterated over elements -->
 			<Ratings
@@ -183,12 +184,13 @@
 		</label>
 	{/each}
 
-	<label for=""><h4 class="h4">{comentario.label.toUpperCase()}</h4></label>
+	<label for="f-comentario"><h4 class="h4">{comentario.label.toUpperCase()}</h4></label>
 	<textarea
 		class="bg-red-100 text-red-800"
 		name={comentario.name}
 		bind:value={comentario.value}
 		placeholder={'Deixe sua opinião...'}
+		id="f-comentario"
 	></textarea>
 
 	<button class="btn variant-filled-primary">Enviar</button>
