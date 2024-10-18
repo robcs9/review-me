@@ -23,6 +23,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "0.5.15",
+    "@types/better-sqlite3": "^7.6.11",
     "@types/eslint": "^9.6.0",
     "@types/node": "22.7.5",
     "autoprefixer": "10.4.20",
@@ -46,6 +47,7 @@
   "dependencies": {
     "@floating-ui/dom": "1.6.11",
     "app": "file:",
+    "better-sqlite3": "^11.4.0",
     "iconify-icon": "^2.1.0"
   }
 }

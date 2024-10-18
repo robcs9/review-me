@@ -1,10 +1,13 @@
 <script lang="ts">
 	import Form from '$lib/components/form/form.svelte';
 	import 'iconify-icon';
-	// import type { PageData } from './$types.js';
-	// export let data: PageData;
+	import type { PageData } from './$types.js';
+	export let data: PageData;
+	
 	import type { ActionData } from './$types';
 	export let form: ActionData;
+
+	// $: console.log(data.tracks)
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">

@@ -22,3 +22,18 @@ export const actions = {
         return { success: true };
     },
 } satisfies Actions;
+
+import { getInitialTracks } from '$lib/server/db';
+
+export const load = (() => {
+
+  const tracks = getInitialTracks();
+
+
+  return {
+
+    tracks,
+
+  };
+
+}) satisfies PageServerLoad;
