@@ -131,12 +131,12 @@
 	/* import type { ActionData } from '../../../routes/$types'; */
 	export let form; //: ActionData;
 	const handleSubmit = () => {
-		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
+		/* let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
 			ratings: ratings,
 			qualidade: qualidade, //qualidadeField
 			comentario: comentario.value
-		};
+		}; */
 		// form = f;
 		if (form?.success) {
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
@@ -145,6 +145,7 @@
 			toastify.success(toastStore, 'Erro!');
 		}
 	};
+
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4 border border-s-violet-500">
@@ -181,6 +182,8 @@
 					<StarFillIcon className="fill-yellow-400 w-8 h-8" />
 				</svelte:fragment>
 			</Ratings>
+			<!-- Input para passar os valores dos campos de avaliação para o servidor -->
+			<input type="text" name={field.name} hidden bind:value={fields[idx].current}>
 		</label>
 	{/each}
 
