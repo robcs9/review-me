@@ -47,41 +47,51 @@
 		label: 'Alguma sugestão, reclamação ou elogio?'
 	};
 
-	let qualidadeField = 0;
-	let radio = {
+	// let qualidadeField = 0;
+	const QUALITY = Object.freeze({
+		MUITOSATISFEITO: 'Muito Satisfeito',
+		SATISFEITO: 'Satisfeito',
+		NEUTRO: 'Neutro',
+		INSATISFEITO: 'Insatisfeito',
+		MUITOINSATISFEITO: 'Muito Insatisfeito'
+	});
+
+	let qualidade = {
+		name: 'qualidade',
+		current: '',
 		items: [
 			{
 				props: {
-					name: 'muito-insatisfeito',
-					value: 1
+					// name: 'muito-insatisfeito',
+					value: QUALITY.MUITOINSATISFEITO
 				},
 				icon: 'noto-v1:pouting-face'
 			},
 			{
 				props: {
-					name: 'insatisfeito',
-					value: 2
+					// name: 'insatisfeito',
+					value: QUALITY.INSATISFEITO
 				},
 				icon: 'noto-v1:confused-face'
 			},
 			{
 				props: {
-					name: 'neutro',
-					value: 3
+					// name: 'neutro',
+					value: QUALITY.NEUTRO
 				},
 				icon: 'noto-v1:pensive-face'
 			},
 			{
 				props: {
-					name: 'satisfeito',
-					value: 4
+					// name: 'satisfeito',
+					value: QUALITY.SATISFEITO
 				},
 				icon: 'noto-v1:smiling-face'
 			},
 			{
 				props: {
-					name: 'muito-satisfeito',
-					value: 5
+					// name: 'muito-satisfeito',
+					value: QUALITY.MUITOSATISFEITO
 				},
 				icon: 'noto-v1:face-savouring-delicious-food'
 			}
@@ -105,7 +115,7 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
-	const handleClick = () => {
+	/* const handleClick = () => {
 		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
 			ratings: ratings,
@@ -115,41 +125,38 @@
 		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 		console.log('formData: \n', f);
 		// console.log('data: ', data);
-	};
+	}; */
 	// export let data;
 	import { enhance } from '$app/forms';
 	/* import type { ActionData } from '../../../routes/$types'; */
-	export let form//: ActionData;
+	export let form; //: ActionData;
 	const handleSubmit = () => {
 		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
 			ratings: ratings,
-			qualidade: qualidadeField,
+			qualidade: qualidade, //qualidadeField
 			comentario: comentario.value
 		};
 		// form = f;
-		if(form?.success) {
+		if (form?.success) {
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
-		// console.log('formData: \n', f);
+			// console.log('formData: \n', f);
 		} else {
 			toastify.success(toastStore, 'Erro!');
 		}
 	};
 </script>
 
-<form
-	method="POST"
-	class="flex flex-col gap-6 p-4 border border-s-violet-500"
->
-<!-- 	use:enhance={handleSubmit}
+<form method="POST" class="flex flex-col gap-6 p-4 border border-s-violet-500">
+	<!-- 	use:enhance={handleSubmit}
 > -->
 	<label for="">
 		<p>QUALIDADE DA SUA REFEIÇÃO HOJE</p>
 		<RadioGroup class="inline-flex gap-2">
-			{#each radio.items as item}
-				<RadioItem class="" bind:group={qualidadeField} {...item.props}>
-					<iconify-icon icon={item.icon} {...radio.iconSize}></iconify-icon>
-					<p>{formatRadioName(item.props.name).toUpperCase()}</p>
+			{#each qualidade.items as item}
+				<RadioItem class="" bind:group={qualidade.current} {...item.props} name={qualidade.name}>
+					<iconify-icon icon={item.icon} {...qualidade.iconSize}></iconify-icon>
+					<p>{formatRadioName(item.props.value).toUpperCase()}</p>
 				</RadioItem>
 			{/each}
 		</RadioGroup>
