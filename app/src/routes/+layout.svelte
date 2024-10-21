@@ -8,11 +8,14 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	// Toast
-	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+	import { initializeStores, Toast, Modal } from '@skeletonlabs/skeleton';
 	initializeStores();
+
 </script>
 
 <Toast />
+
+<Modal />
 
 <!-- App Shell -->
 <AppShell>
