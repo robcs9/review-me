@@ -1,12 +1,15 @@
 <script lang="ts">
     import Form from "../form/form.svelte";
-    export let form;
+
+    // Replace with proper event dispatch or data flow manipulation
+    export let form; //formDrill; // placeholder
 
     // Stores
 	import { getModalStore } from '@skeletonlabs/skeleton';
     
 	// Props
 	import type { SvelteComponent } from 'svelte';
+	import type { form } from "../../../routes/+page.svelte";
 	/** Exposes parent props to this component. */
 	export let parent: SvelteComponent;
     // $: console.log(parent)

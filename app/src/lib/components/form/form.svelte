@@ -131,15 +131,12 @@
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 			// console.log('formData: \n', f);
 		} else {
-			toastify.success(toastStore, 'Erro!');
+			toastify.error(toastStore, 'Error!');
 		}
 	};
-	const borders = "border border-s-violet-500"
 </script>
 
-<form method="POST" class="flex flex-col gap-6 p-4">
-	<!-- 	use:enhance={handleSubmit}
-> -->
+<form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
 	<label for="f-qualidade" class="flex flex-col items-center">
 		<h4 class="h4 mb-3">QUALIDADE DA SUA REFEIÇÃO HOJE</h4>
 		<RadioGroup class="inline-flex gap-2" id="f-qualidade">
