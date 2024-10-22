@@ -3,26 +3,26 @@
 	export let data: PageData;
 	// $: console.log(data)
 
+	// Modal
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	
 	const modalStore = getModalStore();
     
-    import Foo from '$lib/components/foo/foo.svelte';
-
-    // let ref;
-    let props;
-    let slot;
-
+    /* import Foo from '$lib/components/foo/foo.svelte';
+	
     let modalComp: ModalComponent = {
         ref: Foo,
-        /* props,
-        slot,   */
-    };
+    }; */
+
+	const MODALS = {
+		FULLSCREEN: 'fullscreenModal',
+		FORM: 'formModal',
+	}
 
 	const modal: ModalSettings = {
 		type: 'component',
-        component: modalComp,
+        component: MODALS.FORM //modalComp,
 		// Data
 		/* title: 'Example Alert',
 		body: 'something something', */
@@ -31,6 +31,7 @@
 	
     const handleClick = () => {
 		modalStore.trigger(modal);
+		
 	};
 </script>
 

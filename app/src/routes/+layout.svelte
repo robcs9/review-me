@@ -7,15 +7,27 @@
 	import { storePopup } from '@skeletonlabs/skeleton';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
-	// Toast
-	import { initializeStores, Toast, Modal } from '@skeletonlabs/skeleton';
-	initializeStores();
+	// Modals
+	import { Modal } from '@skeletonlabs/skeleton';
+	import FormModal from '$lib/components/modals/form-modal.svelte';
+	import FullscreenModal from '$lib/components/modals/fullscreen-modal.svelte';
+	
+	const modalRegistry: Record<string, ModalComponent> = {
+		// Set a unique modal ID, then pass the component reference
+		formModal: { ref: FormModal },
+		fullscreenModal: { ref: FullscreenModal},
+	};
 
+	// Toast
+	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+	
+	// Initializing stores for Modals, Toasts...
+	initializeStores();
 </script>
 
 <Toast />
 
-<Modal />
+<Modal components={modalRegistry} />
 
 <!-- App Shell -->
 <AppShell>

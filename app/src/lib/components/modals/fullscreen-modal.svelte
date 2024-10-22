@@ -1,19 +1,3 @@
-<!-- <script lang="ts">
-	import type { SvelteComponent } from "svelte";
-
-	let comp;
-
-    export let parent: SvelteComponent;
-    const handleClick = () => {
-        parent.close();
-    }
-</script>
-
-<div class="flex flex-col items-center gap-4">
-	<h1 class="h1">Buzz</h1>
-	<button class="btn variant-filled" on:click={handleClick}>Dismiss!</button>
-</div> -->
-
 <script lang="ts">
     // Stores
 	import { getModalStore } from '@skeletonlabs/skeleton';

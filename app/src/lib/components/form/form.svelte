@@ -115,17 +115,6 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
-	/* const handleClick = () => {
-		let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
-		const f = {
-			ratings: ratings,
-			qualidade: qualidadeField,
-			comentario: comentario.value
-		};
-		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
-		console.log('formData: \n', f);
-		// console.log('data: ', data);
-	}; */
 	// export let data;
 	import { enhance } from '$app/forms';
 	/* import type { ActionData } from '../../../routes/$types'; */
@@ -145,14 +134,14 @@
 			toastify.success(toastStore, 'Erro!');
 		}
 	};
-
+	const borders = "border border-s-violet-500"
 </script>
 
-<form method="POST" class="flex flex-col gap-6 p-4 border border-s-violet-500">
+<form method="POST" class="flex flex-col gap-6 p-4">
 	<!-- 	use:enhance={handleSubmit}
 > -->
-	<label for="f-qualidade">
-		<p>QUALIDADE DA SUA REFEIÇÃO HOJE</p>
+	<label for="f-qualidade" class="flex flex-col items-center">
+		<h4 class="h4 mb-3">QUALIDADE DA SUA REFEIÇÃO HOJE</h4>
 		<RadioGroup class="inline-flex gap-2" id="f-qualidade">
 			{#each qualidade.items as item}
 				<RadioItem class="" bind:group={qualidade.current} {...item.props} name={qualidade.name}>
@@ -164,10 +153,10 @@
 	</label>
 
 	{#each fields as field, idx}
-		<label for={`f-${field.name}`}>
+		<label for={`f-${field.name}`} class="flex flex-col items-center">
 		<!-- <label for={}> -->
-			<h4 class="h4">{field.label.toUpperCase()}</h4>
-			<!-- Fix the name attr for every field as well as the unique id for iterated over elements -->
+			<h4 class="h4 mb-3">{field.label.toUpperCase()}</h4>
+			<!-- Fix the unique id for iterated over elements -->
 			<Ratings
 				bind:value={fields[idx].current}
 				interactive
@@ -186,10 +175,11 @@
 			<input type="text" name={field.name} hidden bind:value={fields[idx].current}>
 		</label>
 	{/each}
-
-	<label for="f-comentario"><h4 class="h4">{comentario.label.toUpperCase()}</h4></label>
+		<label for="f-comentario" class="flex flex-col items-center">
+			<h4 class="h4">{comentario.label.toUpperCase()}</h4>
+		</label>
 	<textarea
-		class="bg-red-100 text-red-800"
+		class="bg-red-100 text-red-800 rounded-2xl"
 		name={comentario.name}
 		bind:value={comentario.value}
 		placeholder={'Deixe sua opinião...'}
