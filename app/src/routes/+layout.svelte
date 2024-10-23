@@ -9,13 +9,22 @@
 
 	// Modals
 	import { Modal } from '@skeletonlabs/skeleton';
-	import FormModal from '$lib/components/modals/form-modal.svelte';
+	import GenericModal from '$lib/components/modals/generic-modal.svelte';
 	import FullscreenModal from '$lib/components/modals/fullscreen-modal.svelte';
-	
+	import FormModal from '$lib/components/modals/form-modal.svelte';
+	import Form from '$lib/components/form/form.svelte';
+
 	const modalRegistry: Record<string, ModalComponent> = {
 		// Set a unique modal ID, then pass the component reference
-		formModal: { ref: FormModal },
-		fullscreenModal: { ref: FullscreenModal},
+		formModal: {
+			ref: FormModal,
+		},
+		genericModal: { 
+			ref: GenericModal,
+			// props: { foo: 'bar' },
+			// slot: Form,
+		},
+		fullscreenModal: { ref: FullscreenModal },
 	};
 
 	// Toast

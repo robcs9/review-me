@@ -8,21 +8,24 @@
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 	
 	const modalStore = getModalStore();
-    
-    /* import Foo from '$lib/components/foo/foo.svelte';
-	
-    let modalComp: ModalComponent = {
-        ref: Foo,
-    }; */
 
 	const MODALS = {
 		FULLSCREEN: 'fullscreenModal',
 		FORM: 'formModal',
+		GENERIC: 'genericModal',
 	}
 
 	const modal: ModalSettings = {
 		type: 'component',
-        component: MODALS.FORM //modalComp,
+        component: MODALS.FORM,
+		meta: {
+			foo: "bar",
+		},
+		response: () => {
+			// console.log('response: ', r);
+			// console.log('Current Foo: ', $modalStore[0].meta.foo)
+			setTimeout(() => { console.log('timeout is over.'); modalStore.clear(); }, 1000)
+		}
 		// Data
 		/* title: 'Example Alert',
 		body: 'something something', */
@@ -31,8 +34,8 @@
 	
     const handleClick = () => {
 		modalStore.trigger(modal);
-		
 	};
+
 </script>
 
 <div>
@@ -44,7 +47,8 @@
 <div class="flex flex-col gap-2 items-center mt-4">
 	<button class="btn variant-outline-tertiary" on:click={handleClick}>Open Fizz</button>
 
-	<div>
+	<!-- Listing data from the SQLite sample db -->
+	<!-- <div>
 		<h6 class="h6">My favorite tracks are:</h6>
 		<ul>
 			{#each data.tracks as { trackName }}
@@ -53,5 +57,5 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
+	</div> -->
 </div>
