@@ -13,3 +13,23 @@ export type Track = {
 
 	genre: string;
 };
+
+export type Review = {
+	
+	id: number;
+
+	qualidade: string;
+
+	comentario: string;
+
+	cordialidade: number;
+
+	apresentacao: number;
+
+	temperatura: number;
+
+	sabor: number;
+
+	higiene: number;
+
+}
