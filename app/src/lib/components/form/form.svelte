@@ -127,13 +127,33 @@
 			comentario: comentario.value
 		}; */
 		// form = f;
+
+		// Not working properly, notifies everything as errors
 		if (form?.success) {
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 			// console.log('formData: \n', f);
 		} else {
 			toastify.error(toastStore, 'Error!');
 		}
+
+		resetForm();
+
+		// window.alert(`it's all over, go home!`);
 	};
+
+	// import { getModalStore } from '@skeletonlabs/skeleton';
+	// const modalStore = getModalStore();
+	const resetForm = () => {
+		let resetFields = fields.map(
+			(e) => {
+				e.current = 0;
+				return e;
+			}
+		);
+		fields = resetFields
+		qualidade.current = '';
+	};
+	
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
@@ -151,7 +171,7 @@
 
 	{#each fields as field, idx}
 		<label for={`f-${field.name}`} class="flex flex-col items-center">
-		<!-- <label for={}> -->
+			<!-- <label for={}> -->
 			<h4 class="h4 mb-3">{field.label.toUpperCase()}</h4>
 			<!-- Fix the unique id for iterated over elements -->
 			<Ratings
@@ -169,12 +189,12 @@
 				</svelte:fragment>
 			</Ratings>
 			<!-- Input para passar os valores dos campos de avaliação para o servidor -->
-			<input type="text" name={field.name} hidden bind:value={fields[idx].current}>
+			<input type="text" name={field.name} hidden bind:value={fields[idx].current} />
 		</label>
 	{/each}
-		<label for="f-comentario" class="flex flex-col items-center">
-			<h4 class="h4">{comentario.label.toUpperCase()}</h4>
-		</label>
+	<label for="f-comentario" class="flex flex-col items-center">
+		<h4 class="h4">{comentario.label.toUpperCase()}</h4>
+	</label>
 	<textarea
 		class="bg-red-100 text-red-800 rounded-2xl"
 		name={comentario.name}

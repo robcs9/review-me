@@ -18,14 +18,14 @@
 	const modal: ModalSettings = {
 		type: 'component',
         component: MODALS.FORM,
-		meta: {
+		/* meta: {
 			foo: "bar",
 		},
 		response: () => {
 			// console.log('response: ', r);
 			// console.log('Current Foo: ', $modalStore[0].meta.foo)
 			setTimeout(() => { console.log('timeout is over.'); modalStore.clear(); }, 1000)
-		}
+		} */
 		// Data
 		/* title: 'Example Alert',
 		body: 'something something', */
