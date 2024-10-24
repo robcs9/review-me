@@ -71,7 +71,7 @@ join genres g
 limit $limit 
 
 `;
-
+  // stmnt (statement)
 	const stmnt = db.prepare(sql);
 
 	const rows = stmnt.all({ limit });
@@ -86,8 +86,8 @@ limit $limit
 export const initReviews = () => {
   const sql = `
 
-    create table if not exists reviews (
-      id integer primary key;
+    create table if not exists "reviews" (
+      id integer primary key,
 
 	    qualidade integer,
     
@@ -101,9 +101,11 @@ export const initReviews = () => {
       
 	    higiene integer,
 
-	    comentario varchar,
+	    comentario text,
     ) 
 
   `;
+  const stmnt = db.prepare(sql);
+  
 
 }
