@@ -1,4 +1,4 @@
-export type Track = {
+/* export type Track = {
 	trackId: number;
 
 	trackName: string;
@@ -12,11 +12,11 @@ export type Track = {
 	artistName: string;
 
 	genre: string;
-};
+}; */
 
 export type Review = {
 	
-	id: number;
+	reviewId: number;
 
 	qualidade: string;
 
