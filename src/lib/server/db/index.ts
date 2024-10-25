@@ -54,16 +54,16 @@ import Database from 'better-sqlite3';
 import { CHINOOK_DB_PATH, DB_PATH } from '$env/static/private';
 import type { Review } from './types';
 
-const db = new Database(DB_PATH, {verbose: console.log});
+const db = new Database(DB_PATH/* , { verbose: console.log } */);
 
 export const getAllReviews = (): Review[] | undefined => {
 	const query = `
   
-  select r.reviewId as reviewId,
+  	select r.reviewId as reviewId,
 
 	r.qualidade as qualidade,
   
-  r.cordialidade as cordialidade,
+  	r.cordialidade as cordialidade,
   
 	r.apresentacao as apresentacao,
     
@@ -75,7 +75,8 @@ export const getAllReviews = (): Review[] | undefined => {
 
 	r.comentario comentario
   
-  from reviews r
+  	from reviews r
+
   `;
 
 	// let rows: Review[] = [];
@@ -91,6 +92,7 @@ export const getAllReviews = (): Review[] | undefined => {
 		return rows as Review[]; */
 	} catch (error) {
 		console.error('\nReviews data retrieval failed!');
+		console.log("Number of tables in db: ", db.prepare('SELECT * FROM sqlite_master').all())
 
 		if (error instanceof Error) {
 			const stackTrace = error;
@@ -98,20 +100,18 @@ export const getAllReviews = (): Review[] | undefined => {
 
 			if (error.message.includes('no such table: reviews')) {
 				console.warn('\nAttempting database reinitialization...');
+
+				initReviews();
+				// retry last read op from here...
+
+				/* const { res, err } = initReviews();
+
 				
-        initReviews();
-        // retry last read op from here...
-
-        /* const { res, err } = initReviews();
-
-        if(res?.database.open) {
-          stmnt = db.prepare(query);
-          rows = stmnt.all();
-          console.warn(stmnt)
-        } */
-
-				/* if (!err) {
-        } */
+				if(res?.database.open) {
+				  stmnt = db.prepare(query);
+				  rows = stmnt.all();
+				  console.warn(stmnt)
+				} */
 			}
 		}
 		// Implement handlers for:
@@ -123,11 +123,11 @@ export const getAllReviews = (): Review[] | undefined => {
 };
 
 export const initReviews = () => {
-	const sql = `
-
-    create table if not exists reviews (
+	const query = `
+    
+	create table if not exists reviews (
       
-      reviewId integer primary key,
+      	reviewId integer primary key,
 
 	    qualidade integer,
     
@@ -143,17 +143,16 @@ export const initReviews = () => {
 
 	    comentario text
     )
-
-  `;
+	`;
 
 	let stmnt, err;
 
 	try {
-		// try db.exec instead?
-    // failing table creation
-    stmnt = db.prepare(sql);
+		stmnt = db.prepare(query);
+		const res = stmnt.run();
+		// console.log('res: ', res)
+		// stmnt = db.prepare('insert into reviews values (1,2,3,4,5,6,7,'test')')
 		console.warn('\nDatabase initialized successfully!');
-    
 	} catch (error) {
 		console.error('\nDatabase initialization failed!');
 
@@ -164,3 +163,10 @@ export const initReviews = () => {
 	}
 	// return { res: stmnt, err };
 };
+
+export const saveReview = () => {
+	const query = `insert into reviews values (1,2,3,4,5,6,7,'test')`;
+	const stmnt = db.prepare(query);
+	console.warn(stmnt);
+
+}
