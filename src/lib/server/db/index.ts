@@ -54,9 +54,9 @@ import Database from 'better-sqlite3';
 import { CHINOOK_DB_PATH, DB_PATH } from '$env/static/private';
 import type { Review } from './types';
 
-const db = new Database(DB_PATH/* , { verbose: console.log } */);
+const db = new Database(DB_PATH /* , { verbose: console.log } */);
 
-export const getAllReviews = (): Review[] | undefined => {
+export const getAllReviews = (limit = 1): Review[] | undefined => {
 	const query = `
   
   	select r.reviewId as reviewId,
@@ -69,13 +69,17 @@ export const getAllReviews = (): Review[] | undefined => {
     
 	r.temperatura as temperatura,
     
-	r.sabor sabor,
+	r.sabor as sabor,
     
-	r.higiene higiene,
+	r.higiene as higiene,
 
-	r.comentario comentario
+	r.comentario as comentario
   
   	from reviews r
+	
+	order by reviewId desc
+
+	limit @limit
 
   `;
 
@@ -86,13 +90,14 @@ export const getAllReviews = (): Review[] | undefined => {
 
 	try {
 		stmnt = db.prepare(query);
-		rows = stmnt.all();
+		rows = stmnt.all({ limit });
 		console.warn('\nReviews data retrieved successfully!');
+		console.log(rows)
 		/* rows = stmnt.all();
 		return rows as Review[]; */
 	} catch (error) {
 		console.error('\nReviews data retrieval failed!');
-		console.log("Number of tables in db: ", db.prepare('SELECT * FROM sqlite_master').all())
+		console.log('Number of tables in db: ', db.prepare('SELECT * FROM sqlite_master').all());
 
 		if (error instanceof Error) {
 			const stackTrace = error;
@@ -103,10 +108,7 @@ export const getAllReviews = (): Review[] | undefined => {
 
 				initReviews();
 				// retry last read op from here...
-
 				/* const { res, err } = initReviews();
-
-				
 				if(res?.database.open) {
 				  stmnt = db.prepare(query);
 				  rows = stmnt.all();
@@ -127,7 +129,7 @@ export const initReviews = () => {
     
 	create table if not exists reviews (
       
-      	reviewId integer primary key,
+      	reviewId integer primary key autoincrement,
 
 	    qualidade integer,
     
@@ -164,9 +166,45 @@ export const initReviews = () => {
 	// return { res: stmnt, err };
 };
 
-export const saveReview = () => {
-	const query = `insert into reviews values (1,2,3,4,5,6,7,'test')`;
-	const stmnt = db.prepare(query);
-	console.warn(stmnt);
+// Wrap with a Promise to provide asynchronous behavior
+export const saveReview = (review: Review) => {
+	// ids e.g.: 20240201001, 202403230023
+	/* const review = {
+		//reviewId: crypto.randomUUID(),
+		qualidade,
+		cordialidade,
+		apresentacao,
+		temperatura,
+		sabor,
+		higiene,
+		comentario,
+	} */
+	/* const rvw = {
+		qualidade: 'Insatisfeito',
+		cordialidade: 1,
+		apresentacao: 2,
+		temperatura: 3,
+		sabor: 4,
+		higiene: 5,
+		comentario: 'Boa comida.',
+	} */
 
-}
+	try {
+		const stmnt = db.prepare(`insert into reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) values (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
+		const insert = stmnt.run(review);
+		console.warn('\nReview saved successfully!');
+		console.log(insert)
+	} catch (error) {
+		console.error('\nReview saving has failed!');
+		if (error instanceof Error) {
+			console.log(`\n${error.message}`);
+		}
+	}
+	// console.warn(stmnt);
+	// validate data before inserting and handle errors
+};
+
+// Implement update;
+// Implement delete;
+// soft delete? column isDeleted (boolean)
+// Implement queries for reports

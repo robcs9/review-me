@@ -23,7 +23,7 @@ export const actions = {
     },
 } satisfies Actions;
 
-import { getInitialTracks } from '$lib/server/db';
+/* import { getInitialTracks } from '$lib/server/db';
 
 export const load = (() => {
 
@@ -36,4 +36,4 @@ export const load = (() => {
 
   };
 
-}) satisfies PageServerLoad;
+}) satisfies PageServerLoad; */

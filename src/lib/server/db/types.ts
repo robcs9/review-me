@@ -16,9 +16,10 @@
 
 export type Review = {
 	
-	reviewId: number;
+	reviewId?: number;
 
 	qualidade: string;
+	// qualidade: "SATISFEITO" | "INSATISFEITO" | ...;
 
 	comentario: string;
 

@@ -1,5 +1,6 @@
 import type { PageServerLoad } from "./$types";
-import { initReviews, getAllReviews,  } from "$lib/server/db";
+import { initReviews, getAllReviews, saveReview } from "$lib/server/db";
+import type { Review } from "$lib/server/db/types";
 
 // Sample code
 /* import { getInitialTracks } from "$lib/server/db";
@@ -11,9 +12,9 @@ export const load: PageServerLoad = () => {
 } */
 
 export const load = (): PageServerLoad => {
-    // console.log('hey');
-    // const res = initReviews();
-    const res = getAllReviews();
-    console.dir(res);
+    
+    // const res = saveReview(review);
+
+    getAllReviews();    
     
 }
