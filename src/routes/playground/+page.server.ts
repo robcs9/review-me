@@ -2,6 +2,7 @@
 import type { PageServerLoad, Actions } from "./$types";
 import type { Review } from "$lib/server/db/types";
 import { saveReview } from "$lib/server/db";
+import { validateReview } from "$lib/utils/validateReview";
 
 export const load = (async ({ parent }) => { 
     // console.log('checking at /playground server')
@@ -42,6 +43,21 @@ export const actions = {
     },
 } satisfies Actions;
 
-const validateReview = (review: Review) => {
+// throws error 'invalid export'
+/* const validateReview = (review: Review) => {
+    const QUALITY = ['Muito Satisfeito',
+		'Satisfeito',
+		'Neutro',
+		'Insatisfeito',
+		'Muito Insatisfeito',
+        ''
+	];
+
+    const result = QUALITY.filter(e => e === review.qualidade);
     
-}
+    if(result.length < 1) {
+        throw new Error('Erro no valor do atributo: qualidade; Valor incoerente.');
+    }
+    
+    return result;
+} */

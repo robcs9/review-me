@@ -18,8 +18,7 @@ export type Review = {
 	
 	reviewId?: number;
 
-	qualidade: string;
-	// qualidade: "SATISFEITO" | "INSATISFEITO" | ...;
+	qualidade: ('Muito Satisfeito' | 'Satisfeito' | 'Neutro' | 'Insatisfeito' | 'Muito Insatisfeito' | ''); //& string;
 
 	comentario: string;
 
