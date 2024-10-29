@@ -115,10 +115,14 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
+
 	// export let data;
 	import { enhance } from '$app/forms';
 	/* import type { ActionData } from '../../../routes/$types'; */
 	export let form; //: ActionData;
+	
+	// export let parentComp;
+	
 	const handleSubmit = () => {
 		/* let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
@@ -132,12 +136,15 @@
 		if (form?.success) {
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 			// console.log('formData: \n', f);
-		} else {
-			toastify.error(toastStore, 'Error!');
 		}
-
+		/* else {
+			toastify.error(toastStore, 'Error!');
+		} */
+		
 		resetForm();
-
+		
+		// parentComp.onClose;
+		
 		// window.alert(`it's all over, go home!`);
 	};
 
@@ -153,7 +160,7 @@
 		fields = resetFields
 		qualidade.current = '';
 	};
-	
+
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>

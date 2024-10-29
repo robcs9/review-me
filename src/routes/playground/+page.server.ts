@@ -8,6 +8,8 @@ export const load = (async ({ parent }) => {
     // console.log( await parent() )
     // saveReview();
 
+    // validateReview(review);
+    
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -30,11 +32,16 @@ export const actions = {
         // qualidade = ('NÃO SATISFEITO' | 'NEUTRO' | 'SATISFEITO' | ...)
         // comentario = non-HTML/SQL/script code
         // rest = integer 0~5
-        saveReview(review);
         
+        // validateReview(review);
+        saveReview(review);
         
         return {
             success: true
         }
     },
 } satisfies Actions;
+
+const validateReview = (review: Review) => {
+    
+}

@@ -12,6 +12,7 @@
 	/** Exposes parent props to this component. */
 	// export let parent: SvelteComponent;
 	// $: console.log(parent)
+	export let parent: any;
 
 	const modalStore = getModalStore();
 
@@ -24,6 +25,15 @@
 	// console.log($modalStore[0].response = () => ("overridden!"));
 
     import Form from '$lib/components/form/form.svelte';
+
+	const handleSubmitTransition = () => {
+		/* setTimeout(() => {
+			parent.onClose
+		}, 2000); */
+		parent.onClose
+	}
+	// ref parent (modal) component
+	// let parentComp = parent;
 </script>
 
 <!-- Modal state check -->
@@ -38,7 +48,8 @@
 				bind:value={$modalStore[0].meta.foo}
 			/> -->
 			<!-- <input class="input" type="text" bind:value={foo}> -->
-			<!-- <button class="btn variant-filled" on:click={parent.onClose}>× Fechar</button> -->
+			<button class="btn variant-filled" on:click={parent.onClose}>× Fechar</button>
+			<!-- <button class="btn variant-filled" on:click={handleSubmitTransition}>× Fechar</button> -->
 		</div>
 	</div>
 {/if}

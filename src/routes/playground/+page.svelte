@@ -45,7 +45,7 @@
 <hr />
 
 <div class="flex flex-col gap-2 items-center mt-4">
-	<button class="btn variant-outline-tertiary" on:click={handleClick}>Open Fizz</button>
+	<button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button>
 
 	<!-- Listing data from the SQLite sample db -->
 	<!-- <div>
