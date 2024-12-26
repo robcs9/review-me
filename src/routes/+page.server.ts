@@ -31,9 +31,10 @@ export const actions = {
 		// comentario = non-HTML/SQL/script code
 		// rest = integer 0~5
 
-		// validateReview(review);
-		saveReview(review);
-
+		const validatedReview = validateReview(review);
+		saveReview(validatedReview);
+		
+		// saveReview(review);
 		return {
 			success: true
 		};

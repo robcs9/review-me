@@ -196,6 +196,7 @@ export const saveReview = (review: Review) => {
 		console.log(insert)
 	} catch (error) {
 		console.error('\nReview saving has failed!');
+		// console.log('error: ',error)
 		if (error instanceof Error) {
 			console.log(`\n${error.message}`);
 		}

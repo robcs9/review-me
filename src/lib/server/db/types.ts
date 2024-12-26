@@ -18,18 +18,13 @@ export type Review = {
 	
 	reviewId?: number;
 
-	qualidade: ('Muito Satisfeito' | 'Satisfeito' | 'Neutro' | 'Insatisfeito' | 'Muito Insatisfeito' | ''); //& string;
-
-	comentario: string;
-
+	qualidade: ('Muito Satisfeito' | 'Satisfeito' | 'Neutro' | 
+		'Insatisfeito' | 'Muito Insatisfeito' | undefined
+	);
+	comentario: string | undefined;
 	cordialidade: number;
-
 	apresentacao: number;
-
 	temperatura: number;
-
 	sabor: number;
-
 	higiene: number;
-
 }
