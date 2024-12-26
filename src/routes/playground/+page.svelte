@@ -6,18 +6,18 @@
 	// Modal
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
-	
+
 	const modalStore = getModalStore();
 
 	const MODALS = {
 		FULLSCREEN: 'fullscreenModal',
 		FORM: 'formModal',
-		GENERIC: 'genericModal',
-	}
+		GENERIC: 'genericModal'
+	};
 
 	const modal: ModalSettings = {
 		type: 'component',
-        component: MODALS.FORM,
+		component: MODALS.FORM
 		/* meta: {
 			foo: "bar",
 		},
@@ -31,11 +31,10 @@
 		body: 'something something', */
 		// image: 'https://i.imgur.com/WOgTG96.gif'
 	};
-	
-    const handleClick = () => {
+
+	const handleClick = () => {
 		modalStore.trigger(modal);
 	};
-
 </script>
 
 <div>
@@ -45,7 +44,13 @@
 <hr />
 
 <div class="flex flex-col gap-2 items-center mt-4">
-	<button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button>
+	<!-- <button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button> -->
+	<button class="btn variant-filled-surface"
+		on:click={handleClick}
+	>
+		<p>INICIAR</p>
+		<iconify-icon icon="flat-color-icons:survey" height="2em"></iconify-icon>
+	</button>
 
 	<!-- Listing data from the SQLite sample db -->
 	<!-- <div>

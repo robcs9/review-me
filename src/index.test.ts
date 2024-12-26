@@ -39,7 +39,7 @@ describe('Review Validation Tests', () => {
 		sabor: 0,
 		temperatura: 0
 	};
-	test('Tipo Review', () => {
+	test('Review type', () => {
 
 		/* assertType<Review>({
 			qualidade: 0,
