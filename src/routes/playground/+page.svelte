@@ -34,7 +34,6 @@
 
 	const openModal = () => {
 		modalStore.trigger(modal);
-		
 	};
 </script>
 
@@ -46,9 +45,7 @@
 
 <div class="flex flex-col gap-2 items-center mt-4">
 	<!-- <button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button> -->
-	<button class="btn variant-filled-surface"
-		on:click={openModal}
-	>
+	<button class="btn variant-filled-surface" on:click={openModal}>
 		<p>INICIAR</p>
 		<iconify-icon icon="flat-color-icons:survey" height="2em"></iconify-icon>
 	</button>

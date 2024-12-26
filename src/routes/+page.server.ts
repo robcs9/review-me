@@ -1,39 +1,41 @@
-import type { PageServerLoad, Actions } from "./$types";
+// import type { Actions } from "@sveltejs/kit";
+import type { PageServerLoad, Actions } from './$types';
+import type { Review } from '$lib/server/db/types';
+import { saveReview } from '$lib/server/db';
+import { validateReview } from '$lib/utils/validateReview';
 
-/* export function load() {
-    // let date = new Date(Date.now());//.toISOString();
-    
-    let data = {
-        date: new Date(Date.now()).toISOString(),
-    };
-    
-    return data;
-} */
+export const load = (async ({ parent }) => {
+	// console.log( await parent() )
+	// saveReview();
+	// validateReview(review);
+}) satisfies PageServerLoad;
 
-/* Server form actions */
 export const actions = {
-    default: async ({ request }) => {
-        const data = await request.formData();
-        console.log("data: ", data);
-        /* const f = {
-            name: 'name',
-            review: 'review',
-        } */
-        return { success: true };
-    },
+	default: async ({ request }) => {
+		const data = await request.formData();
+		// console.log('data: \n', data);
+
+		// Fix typing errors
+		const review: Review = {
+			qualidade: data.get('qualidade'),
+			cordialidade: data.get('cordialidade'),
+			apresentacao: data.get('apresentacao'),
+			temperatura: data.get('temperatura'),
+			sabor: data.get('sabor'),
+			higiene: data.get('higiene'),
+			comentario: data.get('comentario')
+		};
+
+		// Validate form fields to match the Review type constraints
+		// qualidade = ('NÃO SATISFEITO' | 'NEUTRO' | 'SATISFEITO' | ...)
+		// comentario = non-HTML/SQL/script code
+		// rest = integer 0~5
+
+		// validateReview(review);
+		saveReview(review);
+
+		return {
+			success: true
+		};
+	}
 } satisfies Actions;
-
-/* import { getInitialTracks } from '$lib/server/db';
-
-export const load = (() => {
-
-  const tracks = getInitialTracks();
-
-
-  return {
-
-    tracks,
-
-  };
-
-}) satisfies PageServerLoad; */

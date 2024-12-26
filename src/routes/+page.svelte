@@ -1,20 +1,53 @@
 <script lang="ts">
-	import Form from '$lib/components/form/form.svelte';
-	import 'iconify-icon';
-	import type { PageData } from './$types.js';
-	// export let data: PageData;
+	import type { PageData, PageParentData } from './$types';
+	export let data: PageData;
+	// $: console.log(data)
 
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+	// Modal
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 
-	// $: console.log(data.tracks)
-	/* let modal: HTMLDialogElement;
+	const modalStore = getModalStore();
 
-	const handleClick = () => {
-		modal.showModal();
-	} */
+	const MODALS = {
+		FULLSCREEN: 'fullscreenModal',
+		FORM: 'formModal',
+		GENERIC: 'genericModal'
+	};
+
+	const modal: ModalSettings = {
+		type: 'component',
+		component: MODALS.FORM
+		/* meta: {
+			foo: "bar",
+		},
+		response: () => {
+			// console.log('response: ', r);
+			// console.log('Current Foo: ', $modalStore[0].meta.foo)
+			setTimeout(() => { console.log('timeout is over.'); modalStore.clear(); }, 1000)
+		}, */
+		// Data
+		/* title: 'Example Alert',
+		body: 'something something', */
+		// image: 'https://i.imgur.com/WOgTG96.gif'
+	};
+
+	const openModal = () => {
+		modalStore.trigger(modal);
+	};
+
+	// export let form;
 </script>
 
+<!-- <div class="flex flex-col gap-2 items-center mt-4"> -->
+<!-- <button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button> -->
+<!-- <button class="btn variant-filled-surface"
+		on:click={openModal}
+	>
+		<p>INICIAR</p>
+		<iconify-icon icon="flat-color-icons:survey" height="2em"></iconify-icon>
+	</button>
+</div> -->
 <div class="container h-full mx-auto flex justify-center items-center">
 	<div class="space-y-10 text-center flex flex-col items-center mt-2">
 		<h1 class="h1">
@@ -22,13 +55,14 @@
 			<iconify-icon icon="noto:red-heart" height="0.8em"></iconify-icon>
 			<h3 class="h3 mt-2">Avalie-nos através da enquete abaixo!</h3>
 		</h1>
-		
-		<button class="btn variant-filled-surface"><!--  on:click={handleClick}> -->
+
+		<button class="btn variant-filled-surface" on:click={openModal}>
 			<p>INICIAR</p>
 			<iconify-icon icon="flat-color-icons:survey" height="2em"></iconify-icon>
 		</button>
-		<!-- <dialog bind:this={modal}> -->
+
+		<!-- <dialog bind:this={modal}>
 			<Form {form} />
-		<!-- </dialog> -->
+		</dialog> -->
 	</div>
 </div>
