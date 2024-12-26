@@ -1,7 +1,7 @@
 <script lang="ts">
 	import StarIcon from './star-icon.svelte';
 	import StarFillIcon from './star-fill-icon.svelte';
-	import { RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
+	import { getModalStore, RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
 	import 'iconify-icon';
 
 	import * as toastify from '$lib/utils/toastify';
@@ -115,52 +115,51 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
-
 	// export let data;
 	import { enhance } from '$app/forms';
 	/* import type { ActionData } from '../../../routes/$types'; */
 	export let form; //: ActionData;
-	
 	// export let parentComp;
-	
+
+	// const modalStore = getModalStore();
 	const handleSubmit = () => {
 		/* let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
 			ratings: ratings,
 			qualidade: qualidade, //qualidadeField
 			comentario: comentario.value
-		}; */
+			}; */
 		// form = f;
 
-		// Not working properly, notifies everything as errors
+		// Not working properly, notifies everything as errors. Unreachable.
 		if (form?.success) {
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 			// console.log('formData: \n', f);
+			// console.log("All good!")
+			// console.log($modalStore)
 		}
 		/* else {
-			toastify.error(toastStore, 'Error!');
-		} */
-		
+				toastify.error(toastStore, 'Error!');
+				} */
+
 		resetForm();
-		
+		// console.info("debugging handlesubmit");
+		// console.dir($modalStore[0].component)
 		// parentComp.onClose;
-		
+
 		// window.alert(`it's all over, go home!`);
 	};
 
 	// import { getModalStore } from '@skeletonlabs/skeleton';
 	// const modalStore = getModalStore();
 	const resetForm = () => {
-		let resetFields = fields.map(
-			(e) => {
-				e.current = 0;
-				return e;
-			}
-		);
-		fields = resetFields
+		let resetFields = fields.map((e) => {
+			e.current = 0;
+			return e;
+		});
+		fields = resetFields;
 		qualidade.current = '';
 	};
-
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
