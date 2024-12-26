@@ -152,6 +152,9 @@
 
 	// import { getModalStore } from '@skeletonlabs/skeleton';
 	// const modalStore = getModalStore();
+	
+	// todo - fix empty string assignment to all fields except qualidade/comentario when multiple
+	// empty forms are submitted in sequence
 	const resetForm = () => {
 		let resetFields = fields.map((e) => {
 			e.current = 0;
