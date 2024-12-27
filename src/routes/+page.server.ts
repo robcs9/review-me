@@ -11,12 +11,13 @@ export const load = (async ({ parent }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
+	
 	default: async ({ request }) => {
-		const data = await request.formData();
-		// console.log('data: \n', data);
+		
+		const formData = await request.formData();
+		console.log('form data: \n', formData);
 
-		// Fix typing errors
-		const review: Review = {
+		/* const review = {
 			qualidade: data.get('qualidade'),
 			cordialidade: data.get('cordialidade'),
 			apresentacao: data.get('apresentacao'),
@@ -24,19 +25,14 @@ export const actions = {
 			sabor: data.get('sabor'),
 			higiene: data.get('higiene'),
 			comentario: data.get('comentario')
-		};
-
-		// Validate form fields to match the Review type constraints
-		// qualidade = ('NÃO SATISFEITO' | 'NEUTRO' | 'SATISFEITO' | ...)
-		// comentario = non-HTML/SQL/script code
-		// rest = integer 0~5
-
-		const validatedReview = validateReview(review);
-		saveReview(validatedReview);
+		}; */
+		const review = Object.fromEntries(formData)
+		const validated = validateReview(review);
+		saveReview(validated);
 		
-		// saveReview(review);
 		return {
-			success: true
+			success: true,
 		};
+
 	}
 } satisfies Actions;

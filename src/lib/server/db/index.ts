@@ -56,45 +56,41 @@ import type { Review } from './types';
 
 const db = new Database(DB_PATH /* , { verbose: console.log } */);
 
-export const getAllReviews = (limit = 1): Review[] | undefined => {
+export const getAllReviews = (limit: undefined | number): Review[] | undefined => {
+	
+	let orderStmnt = "";
+	let limitStmnt = "limit @limit";
+	
+	if(limit === undefined) limitStmnt = "";
+	if(typeof(limit) === 'number' && limit < 0) {
+		orderStmnt = "ORDER BY id DESC"
+		limit *= -1;
+	}
+
 	const query = `
   
-  	select r.reviewId as reviewId,
-
-	r.qualidade as qualidade,
-  
-  	r.cordialidade as cordialidade,
-  
-	r.apresentacao as apresentacao,
-    
-	r.temperatura as temperatura,
-    
-	r.sabor as sabor,
-    
-	r.higiene as higiene,
-
-	r.comentario as comentario
-  
-  	from reviews r
-	
-	order by reviewId desc
-
-	limit @limit
+  SELECT
+	r.id AS id,
+	r.qualidade AS qualidade,
+  r.cordialidade AS cordialidade,
+	r.apresentacao AS apresentacao,
+	r.temperatura AS temperatura,
+	r.sabor AS sabor,
+	r.higiene AS higiene,
+	r.comentario AS comentario
+  FROM reviews r
+	${orderStmnt}
+	${limitStmnt}
 
   `;
 
-	// let rows: Review[] = [];
 	let rows;
-	// SQL statement returned
-	let stmnt;
+	let stmnt; // SQL statement returned
 
 	try {
 		stmnt = db.prepare(query);
 		rows = stmnt.all({ limit });
 		console.warn('\nReviews data retrieved successfully!');
-		console.log(rows)
-		/* rows = stmnt.all();
-		return rows as Review[]; */
 	} catch (error) {
 		console.error('\nReviews data retrieval failed!');
 		console.log('Number of tables in db: ', db.prepare('SELECT * FROM sqlite_master').all());
@@ -110,9 +106,9 @@ export const getAllReviews = (limit = 1): Review[] | undefined => {
 				// retry last read op from here...
 				/* const { res, err } = initReviews();
 				if(res?.database.open) {
-				  stmnt = db.prepare(query);
-				  rows = stmnt.all();
-				  console.warn(stmnt)
+					stmnt = db.prepare(query);
+					rows = stmnt.all();
+					console.warn(stmnt)
 				} */
 			}
 		}
@@ -121,46 +117,45 @@ export const getAllReviews = (limit = 1): Review[] | undefined => {
 		// - corrupted table structure;
 	}
 
-	return rows as Review[];
+	return rows;
 };
 
 export const initReviews = () => {
+	
 	const query = `
-    
-	create table if not exists reviews (
-      
-      	reviewId integer primary key autoincrement,
 
-	    qualidade integer,
-    
-	    cordialidade integer,
+	CREATE TABLE IF NOT EXISTS reviews (
       
-	    apresentacao integer,
-      
-	    temperatura integer,
-      
-	    sabor integer,
-      
-	    higiene integer,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-	    comentario text
+	    qualidade INTEGER,
+    
+	    cordialidade INTEGER,
+      
+	    apresentacao INTEGER,
+      
+	    temperatura INTEGER,
+      
+	    sabor INTEGER,
+      
+	    higiene INTEGER,
+
+	    comentario TEXT
     )
 	`;
 
-	let stmnt, err;
+	let stmnt; //, err;
 
 	try {
 		stmnt = db.prepare(query);
 		const res = stmnt.run();
-		// console.log('res: ', res)
-		// stmnt = db.prepare('insert into reviews values (1,2,3,4,5,6,7,'test')')
 		console.warn('\nDatabase initialized successfully!');
 	} catch (error) {
 		console.error('\nDatabase initialization failed!');
 
 		if (error instanceof Error) {
 			console.log(error);
-			err = error;
+			// err = error;
 		}
 	}
 	// return { res: stmnt, err };
@@ -190,10 +185,14 @@ export const saveReview = (review: Review) => {
 	} */
 
 	try {
-		const stmnt = db.prepare(`insert into reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) values (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
+		const stmnt = db.prepare(`INSERT INTO reviews (cordialidade, apresentacao, temperatura, sabor, higiene, comentario) VALUES (@cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
+		// const stmnt = db.prepare(`insert into reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) values (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
 		const insert = stmnt.run(review);
 		console.warn('\nReview saved successfully!');
-		console.log(insert)
+		// console.log(insert);
+		
+		let lastEntry = getAllReviews(-1);
+		console.log('Last entry:\n', lastEntry);
 	} catch (error) {
 		console.error('\nReview saving has failed!');
 		// console.log('error: ',error)

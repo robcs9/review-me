@@ -11,10 +11,10 @@ export const load: PageServerLoad = () => {
     return { tracks, }
 } */
 
-export const load = (): PageServerLoad => {
+export const load: PageServerLoad = () => {
     
     // const res = saveReview(review);
 
-    getAllReviews();    
-    
+    console.log('-- DB CHECK --')
+    let rows = getAllReviews(0);
 }

@@ -115,14 +115,15 @@
 			: `${capitalizeStr(splitStr[0])}`;
 	};
 
-	// export let data;
 	import { enhance } from '$app/forms';
-	/* import type { ActionData } from '../../../routes/$types'; */
-	export let form; //: ActionData;
-	// export let parentComp;
+	export let form;
+	// export let form, data;
 
 	// const modalStore = getModalStore();
-	const handleSubmit = () => {
+	const handleSubmit = ({ action, data, form, }) => {
+		console.log('form prop: ', form);
+		console.log('action prop: ', action);
+		console.log('data prop: ', data);
 		/* let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
 			ratings: ratings,
@@ -133,6 +134,7 @@
 
 		// Not working properly, notifies everything as errors. Unreachable.
 		if (form?.success) {
+			console.log('Data saved');
 			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
 			// console.log('formData: \n', f);
 			// console.log("All good!")
@@ -142,7 +144,7 @@
 				toastify.error(toastStore, 'Error!');
 				} */
 
-		resetForm();
+		// resetForm();
 		// console.info("debugging handlesubmit");
 		// console.dir($modalStore[0].component)
 		// parentComp.onClose;
@@ -163,6 +165,8 @@
 		fields = resetFields;
 		qualidade.current = '';
 	};
+	
+	$: console.log('form: ', form)
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
