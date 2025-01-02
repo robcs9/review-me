@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import type { ActionData } from '../$types';
 	import type { PageData, PageParentData } from './$types';
-	export let data: PageData;
+	export let data: PageData, form: ActionData;
 	// $: console.log(data)
 
 	// Modal
@@ -35,6 +37,21 @@
 	const openModal = () => {
 		modalStore.trigger(modal);
 	};
+
+
+	let comentario = {
+	name: 'comentario',
+	label: 'Comentário',
+	value: '',
+}
+
+const handleSubmit = ( { data, actions, form } ) => {
+
+	console.log('Submitted!');
+	console.log('form response: ', form)
+	console.log('actions response: ', actions)
+	console.log('data response: ', data)
+}
 </script>
 
 <div>
@@ -43,22 +60,26 @@
 
 <hr />
 
-<div class="flex flex-col gap-2 items-center mt-4">
-	<!-- <button class="btn variant-outline-tertiary" on:click={handleClick}>Open Form</button> -->
+<!-- <div class="flex flex-col gap-2 items-center mt-4">
 	<button class="btn variant-filled-surface" on:click={openModal}>
 		<p>INICIAR</p>
 		<iconify-icon icon="flat-color-icons:survey" height="2em"></iconify-icon>
 	</button>
-
-	<!-- Listing data from the SQLite sample db -->
-	<!-- <div>
-		<h6 class="h6">My favorite tracks are:</h6>
-		<ul>
-			{#each data.tracks as { trackName }}
-				<li>
-					<p>{trackName}</p>
-				</li>
-			{/each}
-		</ul>
-	</div> -->
 </div>
+ -->
+
+<!-- Form debugging -->
+<form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
+	<label for="f-comentario" class="flex flex-col items-center">
+		<h4 class="h4">{comentario.label.toUpperCase()}</h4>
+	</label>
+	<textarea
+		class="bg-red-100 text-red-800 rounded-2xl"
+		name={comentario.name}
+		bind:value={comentario.value}
+		placeholder={'Deixe sua opinião...'}
+		id="f-comentario"
+	></textarea>
+
+	<button class="btn variant-filled-primary">Enviar</button>
+</form>

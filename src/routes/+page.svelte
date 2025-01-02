@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { PageData, PageParentData } from './$types';
-	export let data: PageData;
-	// $: console.log(data)
+	import type { PageData, ActionData } from './$types';
+	//export let data: PageData, form: ActionData;
+	// let { data, form }: { data: PageData, form: ActionData } = $props(); // Svelte 5
 
 	// Modal
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
@@ -17,9 +17,11 @@
 
 	const modal: ModalSettings = {
 		type: 'component',
-		component: MODALS.FORM
+		component: MODALS.FORM,
 		/* meta: {
 			foo: "bar",
+			data,
+			form
 		},
 		response: () => {
 			// console.log('response: ', r);

@@ -34,6 +34,15 @@
 	};
 	// ref parent (modal) component
 	// let parentComp = parent;
+
+	console.log('Debugging form-modal.svelte');
+	//export let foo: string | number;
+	//console.log('foo: ', $modalStore[0].meta.foo);
+	
+	// console.log('Parent: ')
+	// console.dir(parent.background)
+
+	
 </script>
 
 <!-- Modal state check -->

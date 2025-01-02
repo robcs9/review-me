@@ -1,5 +1,5 @@
 // import type { Actions } from "@sveltejs/kit";
-import type { PageServerLoad, Actions } from './$types';
+import type { PageServerLoad, Actions, } from './$types';
 import type { Review } from '$lib/server/db/types';
 import { saveReview } from '$lib/server/db';
 import { validateReview } from '$lib/utils/validateReview';
@@ -39,7 +39,7 @@ export const actions = {
 		
 		return {
 			success: true,
-		} satisfies PageServerData;
+		};
 
 	}
 } satisfies Actions;

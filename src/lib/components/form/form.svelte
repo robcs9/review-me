@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ActionData, PageData } from './../../routes/$types';
 	import StarIcon from './star-icon.svelte';
 	import StarFillIcon from './star-fill-icon.svelte';
 	import { getModalStore, RadioGroup, RadioItem, Ratings } from '@skeletonlabs/skeleton';
@@ -117,13 +118,13 @@
 
 	import { enhance } from '$app/forms';
 	// export let form;
-	export let form, data;
 
 	// const modalStore = getModalStore();
 	// const handleSubmit = ({ action, data, form, }) => {
 	const handleSubmit = ({ action, data, form }) => {
+		console.log('Debugging handleSubmit')
 		console.log('form prop: ', form);
-		console.log('action prop: ', action);
+		// console.log('action prop: ', action);
 		console.log('data prop: ', data);
 		/* let ratings = fields.map(({ name, current }) => ({ name: name, value: current }));
 		const f = {
@@ -175,7 +176,9 @@
 		// console.log(fields)
 	};
 
-	$: console.log('form debugging: ', form);
+	export let form: ActionData, data: PageData;
+	// $: console.dir('form debugging: ', form);
+	console.dir('form debugging:');
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
