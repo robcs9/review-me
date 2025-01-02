@@ -12,6 +12,7 @@ export const validateReview = (review: any) => {
 		validated[k] = v;
 	}
 	
+	console.log('Debugging validated review: ', validated)
 	return validated as Review;
 
 };

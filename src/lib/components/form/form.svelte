@@ -11,31 +11,31 @@
 	let fields = [
 		{
 			name: 'cordialidade',
-			current: 0,
+			current: null,
 			max: 5,
 			label: 'Cordialidade da equipe'
 		},
 		{
 			name: 'apresentacao',
-			current: 0,
+			current: null,
 			max: 5,
 			label: 'Apresentação dos pratos'
 		},
 		{
 			name: 'temperatura',
-			current: 0,
+			current: null,
 			max: 5,
 			label: 'Temperatura dos alimentos'
 		},
 		{
 			name: 'sabor',
-			current: 0,
+			current: null,
 			max: 5,
 			label: 'Sabor/tempero dos alimentos'
 		},
 		{
 			name: 'higiene',
-			current: 0,
+			current: null,
 			max: 5,
 			label: 'Limpeza/higiene em geral'
 		}
@@ -43,7 +43,7 @@
 
 	let comentario = {
 		name: 'comentario',
-		value: '',
+		value: null,
 		label: 'Alguma sugestão, reclamação ou elogio?'
 	};
 
@@ -116,11 +116,12 @@
 	};
 
 	import { enhance } from '$app/forms';
-	export let form;
-	// export let form, data;
+	// export let form;
+	export let form, data;
 
 	// const modalStore = getModalStore();
-	const handleSubmit = ({ action, data, form, }) => {
+	// const handleSubmit = ({ action, data, form, }) => {
+	const handleSubmit = ({ action, data, form }) => {
 		console.log('form prop: ', form);
 		console.log('action prop: ', action);
 		console.log('data prop: ', data);
@@ -145,6 +146,7 @@
 				} */
 
 		resetForm();
+
 		// console.info("debugging handlesubmit");
 		// console.dir($modalStore[0].component)
 		// parentComp.onClose;
@@ -154,7 +156,7 @@
 
 	// import { getModalStore } from '@skeletonlabs/skeleton';
 	// const modalStore = getModalStore();
-	
+
 	// todo - fix empty string assignment to all fields except qualidade/comentario when multiple
 	// empty forms are submitted in sequence
 	const resetForm = () => {
@@ -165,17 +167,15 @@
 		fields = resetFields;
 		qualidade.current = ''; */
 
-		fields = fields.map(
-			(field) => {
-				field.current = 0
-				return field;
-			}
-		);
+		fields = fields.map((field) => {
+			field.current = 0;
+			return field;
+		});
 		qualidade.current = undefined;
 		// console.log(fields)
 	};
-	
-	$: console.log('form: ', form)
+
+	$: console.log('form debugging: ', form);
 </script>
 
 <form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
