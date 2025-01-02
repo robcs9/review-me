@@ -144,7 +144,7 @@
 				toastify.error(toastStore, 'Error!');
 				} */
 
-		// resetForm();
+		resetForm();
 		// console.info("debugging handlesubmit");
 		// console.dir($modalStore[0].component)
 		// parentComp.onClose;
@@ -158,12 +158,21 @@
 	// todo - fix empty string assignment to all fields except qualidade/comentario when multiple
 	// empty forms are submitted in sequence
 	const resetForm = () => {
-		let resetFields = fields.map((e) => {
+		/* let resetFields = fields.map((e) => {
 			e.current = 0;
 			return e;
 		});
 		fields = resetFields;
-		qualidade.current = '';
+		qualidade.current = ''; */
+
+		fields = fields.map(
+			(field) => {
+				field.current = 0
+				return field;
+			}
+		);
+		qualidade.current = undefined;
+		// console.log(fields)
 	};
 	
 	$: console.log('form: ', form)

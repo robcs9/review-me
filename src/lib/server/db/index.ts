@@ -51,7 +51,7 @@ limit $limit
 
 import Database from 'better-sqlite3';
 
-import { CHINOOK_DB_PATH, DB_PATH } from '$env/static/private';
+import { DB_PATH } from '$env/static/private';
 import type { Review } from './types';
 
 const db = new Database(DB_PATH /* , { verbose: console.log } */);
@@ -117,7 +117,7 @@ export const getAllReviews = (limit: undefined | number): Review[] | undefined =
 		// - corrupted table structure;
 	}
 
-	return rows;
+	return rows as Review[];
 };
 
 export const initReviews = () => {
@@ -185,7 +185,7 @@ export const saveReview = (review: Review) => {
 	} */
 
 	try {
-		const stmnt = db.prepare(`INSERT INTO reviews (cordialidade, apresentacao, temperatura, sabor, higiene, comentario) VALUES (@cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
+		const stmnt = db.prepare(`INSERT INTO reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) VALUES (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
 		// const stmnt = db.prepare(`insert into reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) values (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
 		const insert = stmnt.run(review);
 		console.warn('\nReview saved successfully!');

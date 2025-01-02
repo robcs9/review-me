@@ -6,7 +6,8 @@ A review survey service in the works.
 - [x] Estrutura inicial do Formulário
 - [x] Formulário funcional
 - [x] Resolver problema de navegação usando os caminhos da estrutura do projeto
-- [~] Modelagem de dados e banco (30%)
+- [x] Modelagem de dados e banco
+- [~] Corrigir desaparecimento do campo "qualidade" do FormData durante submissão quando deveria ser undefined ou null
 - [~] Verificar transições do formModal ao submeter o form
 - [] Integrar implementações do "playground" à rota principal
 - [] Gerador de Relatórios (jsPDF)
