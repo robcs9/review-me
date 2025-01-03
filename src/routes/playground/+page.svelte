@@ -2,8 +2,6 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData } from '../$types';
 	import type { PageData, PageParentData } from './$types';
-	export let data: PageData, form: ActionData;
-	// $: console.log(data)
 
 	// Modal
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
@@ -38,24 +36,44 @@
 		modalStore.trigger(modal);
 	};
 
-
 	let comentario = {
-	name: 'comentario',
-	label: 'Comentário',
-	value: '',
-}
+		name: 'comentario',
+		label: 'Comentário',
+		value: ''
+	};
 
-const handleSubmit = ( { data, actions, form } ) => {
+	export let data: PageData, form: ActionData;
+	// const handleSubmit = ( { data, actions, form } ) => {
+	// handleSubmit is invoked before the server even receive the formData for processing
+	const handleSubmit = (res) => {
+		// console.log('Submitted!');
+		console.log('Submit event response: ', res);
+	};
 
-	console.log('Submitted!');
-	console.log('form response: ', form)
-	console.log('actions response: ', actions)
-	console.log('data response: ', data)
-}
+	// $: console.log('form: ', form);
+
+	import * as toastify from '$lib/utils/toastify';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	const toastStore = getToastStore();
+
+	// Notification
+	$: if (form?.success) {
+		console.log('Data saved');
+		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
+		console.log('Removing notification in 1.5 secs...');
+		setTimeout(() => {
+			toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre! <3');
+			form.success = false;
+		}, 1500);
+		// toastStore.clear
+	}
+	$: if (form?.fail) {
+		toastify.error(toastStore, 'Error!');
+	}
 </script>
 
 <div>
-	<h1>'/playground' is a PLAYGROUND for data manipulation and other kinds of tests</h1>
+	<h1>'/playground' is a place for testing all sorts of implementations for this project</h1>
 </div>
 
 <hr />
@@ -67,14 +85,17 @@ const handleSubmit = ( { data, actions, form } ) => {
 	</button>
 </div>
  -->
+<!-- z-index and positioning testing -->
+<h1 class="h1 absolute z-[1000] bg-green-400 outline-double">All Good!</h1>
+<h1 class="h1 absolute z-[999] bg-blue-400">All Gucci!</h1>
 
 <!-- Form debugging -->
-<form method="POST" class="flex flex-col gap-6 p-4" use:enhance={handleSubmit}>
-	<label for="f-comentario" class="flex flex-col items-center">
+<form method="POST" class="flex flex-col items-center gap-6 p-4" use:enhance={handleSubmit}>
+	<label for="f-comentario" class="">
 		<h4 class="h4">{comentario.label.toUpperCase()}</h4>
 	</label>
 	<textarea
-		class="bg-red-100 text-red-800 rounded-2xl"
+		class="bg-red-100 text-red-800 rounded-2xl w-[32em]"
 		name={comentario.name}
 		bind:value={comentario.value}
 		placeholder={'Deixe sua opinião...'}
@@ -82,4 +103,7 @@ const handleSubmit = ( { data, actions, form } ) => {
 	></textarea>
 
 	<button class="btn variant-filled-primary">Enviar</button>
+	{#if form?.success}
+		<h1 class="h1">FORM SUCCESSFULLY SUBMITTED</h1>
+	{/if}
 </form>

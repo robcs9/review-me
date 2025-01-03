@@ -1,7 +1,12 @@
 <script lang="ts">
 	import type { PageData, ActionData } from './$types';
-	//export let data: PageData, form: ActionData;
+	export let data: PageData, form: ActionData;
 	// let { data, form }: { data: PageData, form: ActionData } = $props(); // Svelte 5
+	
+	//Toast
+	import * as toastify from '$lib/utils/toastify';
+	import { getToastStore } from '@skeletonlabs/skeleton';
+	const toastStore = getToastStore();
 
 	// Modal
 	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
@@ -20,13 +25,12 @@
 		component: MODALS.FORM,
 		/* meta: {
 			foo: "bar",
-			data,
 			form
 		},
-		response: () => {
-			// console.log('response: ', r);
+		response: (res) => {
+			console.log('debug modal response: ', res);
 			// console.log('Current Foo: ', $modalStore[0].meta.foo)
-			setTimeout(() => { console.log('timeout is over.'); modalStore.clear(); }, 1000)
+			// setTimeout(() => { console.log('timeout is over.'); modalStore.clear(); }, 1000)
 		}, */
 		// Data
 		/* title: 'Example Alert',
@@ -38,7 +42,14 @@
 		modalStore.trigger(modal);
 	};
 
-	// export let form;
+	$: if(form?.success) {
+		// console.log('Formulário submetido com sucesso!');
+		toastify.success(toastStore, 'Obrigado pela sua avaliação! Volte sempre!');
+	}
+	$: if (form?.fail) {
+		toastify.error(toastStore, 'Erro ao submeter o formulário!');
+	}
+	// $: console.log('debug form action from root path: ', form)
 </script>
 
 <!-- <div class="flex flex-col gap-2 items-center mt-4"> -->

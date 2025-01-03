@@ -16,7 +16,7 @@ export const load = (async ({ parent }) => {
 export const actions = {
     default: async ( { request } ) => {
         const data = await request.formData();
-        console.log('form data: \n', data);
+        console.log('playground form data: \n', data);
         
         // Fix typing errors
         const review: Review = {

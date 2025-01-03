@@ -35,7 +35,7 @@
 	// ref parent (modal) component
 	// let parentComp = parent;
 
-	console.log('Debugging form-modal.svelte');
+	// console.log('Debug form-modal.svelte');
 	//export let foo: string | number;
 	//console.log('foo: ', $modalStore[0].meta.foo);
 	

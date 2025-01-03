@@ -33,7 +33,14 @@ export const actions = {
 				review[k] = reviewData[k];
 		}
 		// console.log('Debugging review: ', review)
-		saveReview(review);
+		try {
+			saveReview(review);
+		} catch (error) {
+			console.log('Review saving failed. Error:', error);
+			return {
+				fail: true,
+			};
+		}
 		// const validated = validateReview(reviewData);
 		// saveReview(validated);
 		
