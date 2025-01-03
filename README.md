@@ -9,10 +9,10 @@ A review survey service in the works.
 - [x] Modelagem de dados e banco
 - [x] Integrar implementações do "playground" à rota principal
 - [x] Corrigir desaparecimento do campo "qualidade" do FormData durante submissão quando deveria ser undefined ou null
-- [~] Verificar transições do formModal ao submeter o form
-- [] Gerador de Relatórios (jsPDF)
-- [] Adicionar efeito de preenchimento ao hover dos ícones estrelas
-- [] ~~Fix buggy form responses (always getting error toasts at '/playground' upon form submission and always failing the first submission at the root route)~~
+- [x] Fix buggy form responses
+- [x] Verificar transições do formModal ao submeter o form
+- [] ~~Adicionar efeito de preenchimento ao hover dos ícones estrelas~~
+- [] ~~Gerador de Relatórios (jsPDF)~~
 
 
 # create-svelte
