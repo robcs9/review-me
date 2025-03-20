@@ -77,7 +77,8 @@ export const getAllReviews = (limit: undefined | number): Review[] | undefined =
 	r.temperatura AS temperatura,
 	r.sabor AS sabor,
 	r.higiene AS higiene,
-	r.comentario AS comentario
+	r.comentario AS comentario,
+	r.timestamp AS timestamp
   FROM reviews r
 	${orderStmnt}
 	${limitStmnt}
@@ -140,7 +141,10 @@ export const initReviews = () => {
       
 	    higiene INTEGER,
 
-	    comentario TEXT
+	    comentario TEXT,
+
+			timestamp TEXT
+
     )
 	`;
 
@@ -185,7 +189,7 @@ export const saveReview = (review: Review) => {
 	} */
 
 	try {
-		const stmnt = db.prepare(`INSERT INTO reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) VALUES (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
+		const stmnt = db.prepare(`INSERT INTO reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario, timestamp) VALUES (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario, datetime('now','localtime'))`); //(?, ?, ?, ?, ?, ?, ?)`);
 		// const stmnt = db.prepare(`insert into reviews (qualidade, cordialidade, apresentacao, temperatura, sabor, higiene, comentario) values (@qualidade, @cordialidade, @apresentacao, @temperatura, @sabor, @higiene, @comentario)`); //(?, ?, ?, ?, ?, ?, ?)`);
 		const insert = stmnt.run(review);
 		console.warn('\nReview saved successfully!');

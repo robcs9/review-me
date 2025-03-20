@@ -1,19 +1,3 @@
-/* export type Track = {
-	trackId: number;
-
-	trackName: string;
-
-	albumId: number;
-
-	albumTitle: string;
-
-	artistId: number;
-
-	artistName: string;
-
-	genre: string;
-}; */
-
 export type Review = {
 	// reviewId?: number;
 	id?: number;
@@ -25,4 +9,5 @@ export type Review = {
 	sabor: number | null;
 	higiene: number | null;
 	comentario: string | undefined | null;
+	timestamp: Date;
 };

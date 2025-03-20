@@ -8,7 +8,7 @@
 - [x] Corrigir desaparecimento do campo "qualidade" do FormData durante submissão quando deveria ser undefined ou null
 - [x] Fix buggy form responses
 - [x] Verificar transições do formModal ao submeter o form
-- [ ] Registro de timestamps nos reviews
+- [x] Registro de timestamps nos reviews
 - [ ] Relatórios diários, mensais, anuais (web/pdf/dashboard?)
 - [ ] Implementação de backup de dados em cloud storage (?)
 - [ ] Gerenciamento do db (acesso administrativo para leitura/backup/migração)
