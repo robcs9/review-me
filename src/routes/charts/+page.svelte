@@ -11,7 +11,11 @@
     },
     series: [
       {
-        name: "sales",
+        name: "Satisfação",
+        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+      },
+      {
+        name: "Satisfação",
         data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
       },
     ],
@@ -20,17 +24,17 @@
     },
   };
   
-  let chart: HTMLDivElement;
+  let chartDiv: HTMLDivElement;
 
   onMount(async () => {
     const apexcharts = await import('apexcharts');
-    // console.dir(apexcharts)
-    let c = new apexcharts.default(chart,options)
-    c.render();
+    const { default: ApexCharts } = apexcharts;
+    let chart = new ApexCharts(chartDiv, options);
+    chart.render();
   })
 </script>
 <!-- <div use:chart={options} /> -->
-<div id="chart" bind:this={chart} />
+<div id="chart" bind:this={chartDiv} />
 
 
 <!-- For best results, preview this in either the full-width or full-screen preview modes. -->
