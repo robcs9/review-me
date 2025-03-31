@@ -154,42 +154,15 @@
 <script>
   import { Bar } from 'svelte-chartjs';
   import { Chart, registerables } from 'chart.js';
-  // import * as data1 from './data';
-
+  import * as mockData from './data';
+  // console.log(data1.data)
   Chart.register(...registerables);
-  
-  const data = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-    datasets: [{
-      label: 'Weekly Sales',
-      data: [18, 12, 6, 9, 14],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.4)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.8)',
-        'rgba(75, 192, 192, 1)'
-      ],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    },
-    {
-      label: 'Weekly Sales',
-      data: [18, 12, 6, 9, 14],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.4)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.8)',
-        'rgba(75, 192, 192, 1)'
-      ],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    }
-  ]};
+  const data = mockData.reviews.qualidade;
 
   const options = {
     scales: {
       y: {
-        beginAtZero: true
+        
       }
     }
   };
