@@ -47,9 +47,10 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.11",
-    "apexcharts": "^4.5.0",
     "app": "file:",
     "better-sqlite3": "^11.4.0",
-    "iconify-icon": "^2.1.0"
+    "chart.js": "^4.4.8",
+    "iconify-icon": "^2.1.0",
+    "svelte-chartjs": "^3.1.5"
   }
 }
