@@ -56,7 +56,7 @@ import type { Review } from './types';
 
 const db = new Database(DB_PATH /* , { verbose: console.log } */);
 
-export const getAllReviews = (limit: undefined | number): Review[] | undefined => {
+export const getAllReviews = (limit?: number): Review[] | undefined => {
 	
 	let orderStmnt = "";
 	let limitStmnt = "limit @limit";
