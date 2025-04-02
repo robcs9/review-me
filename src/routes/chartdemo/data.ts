@@ -9,6 +9,7 @@ interface ReviewChartData {
   higiene: ChartData;
 }
 
+// crypto doesn't play well on the client-side
 const randomReviewData = () => {
   let randNums = [];
   for(let i = 0; i < 5; i++) {
@@ -20,22 +21,22 @@ const randomReviewData = () => {
 
 const reviewsData = {
   // count for each answer type
+  // Muito Insatisfeito, Insatisfeito,
+  // Neutro,Satisfeito,Muito Satisfeito
   qualidade: [
-    // Muito Insatisfeito, Insatisfeito,
-    // Neutro,Satisfeito,Muito Satisfeito
     10,20,30,40,50
   ],
   // Nota 1, 2, 3, 4, 5
-  // cordialidade: [10,20,30,40,50],
-  // apresentacao: [10,20,30,40,50],
-  // temperatura: [10,20,30,40,50],
-  // sabor: [10,20,30,40,50],
-  // higiene: [10,20,30,40,50],
-  cordialidade: randomReviewData(),
-  apresentacao: randomReviewData(),
-  temperatura: randomReviewData(),
-  sabor: randomReviewData(),
-  higiene: randomReviewData(),
+  cordialidade: [10,20,30,40,50],
+  apresentacao: [10,20,30,40,50],
+  temperatura: [10,20,30,40,50],
+  sabor: [10,20,30,40,50],
+  higiene: [10,20,30,40,50],
+  // cordialidade: randomReviewData(),
+  // apresentacao: randomReviewData(),
+  // temperatura: randomReviewData(),
+  // sabor: randomReviewData(),
+  // higiene: randomReviewData(),
   comentario: [
     'bad','so, so','edible','better',
     'getting there','surprising','delicious'
