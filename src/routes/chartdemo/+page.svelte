@@ -151,21 +151,52 @@
 
 <!-- Using svelte-chartjs (Alternative Wrapper): -->
 
-<script>
-  import { Bar } from 'svelte-chartjs';
-  import { Chart, registerables } from 'chart.js';
+<script lang="ts">
+  import { Bar, Pie } from 'svelte-chartjs';
+  import { Chart, registerables, type ChartOptions, } from 'chart.js';
   import * as mockData from './data';
   // console.log(data1.data)
   Chart.register(...registerables);
-  const data = mockData.reviews.qualidade;
+  const csatData = mockData.csatData;
+  const data = mockData.reviews;
 
-  const options = {
+  const csatOptions: ChartOptions = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'CSAT - Janeiro/2025'
+      },
+    },
+    responsive: true,
+  };
+
+  const options: ChartOptions = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Avaliação - Janeiro/2025'
+      },
+    },
+    responsive: true,
     scales: {
+      x: {
+        stacked: true,
+      },
       y: {
-        
+        stacked: true
       }
     }
   };
 </script>
-
-<Bar {data} {options} />
+<header>
+  <h3 class="h3 m-4">Resultados Mensal - Janeiro/2025</h3>
+</header>
+<div class="flex justify-center">
+  <div class="h-[100vh] w-[100vw] lg:w-[80vw]">
+    <div class="w-[50vw]">
+      <Pie data={csatData} options={csatOptions} />
+    </div>
+    <Bar {data} {options} />
+  </div>
+</div>
+  
