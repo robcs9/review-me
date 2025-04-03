@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import type { ChartData } from "chart.js";
 interface ReviewChartData {
   // qualidade: ChartData;
@@ -10,33 +9,49 @@ interface ReviewChartData {
 }
 
 // crypto doesn't play well on the client-side
-const randomReviewData = () => {
+function randomReviewData() {
   let randNums = [];
   for(let i = 0; i < 5; i++) {
-    randNums.push(crypto.randomInt(101));
+    randNums.push(Math.floor(Math.random() * 100));
   }
   return randNums;
 }
-// console.log(randomReviewData())
 
-const reviewsData = {
-  // count for each answer type
-  // Muito Insatisfeito, Insatisfeito,
-  // Neutro,Satisfeito,Muito Satisfeito
-  qualidade: [
-    10,20,30,40,50
-  ],
-  // Nota 1, 2, 3, 4, 5
-  cordialidade: [10,20,30,40,50],
-  apresentacao: [10,20,30,40,50],
-  temperatura: [10,20,30,40,50],
-  sabor: [10,20,30,40,50],
-  higiene: [10,20,30,40,50],
-  // cordialidade: randomReviewData(),
-  // apresentacao: randomReviewData(),
-  // temperatura: randomReviewData(),
-  // sabor: randomReviewData(),
-  // higiene: randomReviewData(),
+// Muito Insatisfeito,Insatisfeito,Neutro,Satisfeito,Muito Satisfeito
+const qualidade = [10,20,30,40,50];
+// Nota 1, 2, 3, 4, 5
+const cordialidade = randomReviewData();
+const apresentacao = randomReviewData();
+const temperatura = randomReviewData();
+const sabor = randomReviewData();
+const higiene = randomReviewData();
+const qualidadeTotal = countTotal(qualidade);
+const cordialidadeTotal = countTotal(cordialidade);
+const apresentacaoTotal = countTotal(apresentacao);
+const temperaturaTotal = countTotal(temperatura);
+const saborTotal = countTotal(sabor);
+const higieneTotal = countTotal(higiene);
+
+function countTotal(values: number[]) {
+  return values.reduce(
+    (prev, curr) => (prev + curr)
+  );
+}
+
+export const reviewsData = {
+  qualidade,
+  cordialidade,
+  apresentacao,
+  temperatura,
+  sabor,
+  higiene,
+  qualidadeTotal,
+  cordialidadeTotal,
+  apresentacaoTotal,
+  temperaturaTotal,
+  saborTotal,
+  higieneTotal,
+  // qualidadeTotal: qualidade.reduce(),
   comentario: [
     'bad','so, so','edible','better',
     'getting there','surprising','delicious'

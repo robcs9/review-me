@@ -154,9 +154,11 @@
 <script lang="ts">
   import { Bar, Pie } from 'svelte-chartjs';
   import { Chart, registerables, type ChartOptions, } from 'chart.js';
+  import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
   // console.log(data1.data)
   Chart.register(...registerables);
+  Chart.register(ChartDataLabels);
   const csatData = mockData.csatData;
   const data = mockData.reviews;
 
@@ -164,7 +166,19 @@
     plugins: {
       title: {
         display: true,
-        text: 'CSAT - Janeiro/2025'
+        text: 'CSAT - Janeiro/2025',
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        offset: -40,
+        formatter: (val, ctx) => {
+          const total = ctx.chart.data.datasets[0].data.reduce(
+            (prev, curr) => (prev + curr)
+          );
+          const percentual = (val / total * 100).toFixed(2);
+          return `${percentual}%\n(count: ${val})`;
+        }
       },
     },
     responsive: true,
@@ -174,7 +188,21 @@
     plugins: {
       title: {
         display: true,
-        text: 'Avaliação - Janeiro/2025'
+        text: 'Indicadores - Janeiro/2025'
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'start',
+        offset: -5,
+        formatter: (val, ctx) => {
+          console.log(`canvas width: ${ctx.chart.canvas.width}`);
+
+          const total = ctx.chart.data.datasets[0].data.reduce(
+            (prev, curr) => (prev + curr)
+          );
+          const percentual = (val / total * 100).toFixed(2);
+          return `${percentual}% (count: ${val})`;
+        }
       },
     },
     responsive: true,
@@ -183,20 +211,21 @@
         stacked: true,
       },
       y: {
-        stacked: true
+        stacked: true,
       }
     }
   };
 </script>
-<header>
-  <h3 class="h3 m-4">Resultados Mensal - Janeiro/2025</h3>
-</header>
+<!-- <header>
+</header> -->
 <div class="flex justify-center">
   <div class="h-[100vh] w-[100vw] lg:w-[80vw]">
     <div class="w-[50vw]">
-      <Pie data={csatData} options={csatOptions} />
+      <h3 class="h3 m-4">Resultados Mensal - Janeiro/2025</h3>
+      <Pie data={csatData} options={csatOptions}/>
     </div>
     <Bar {data} {options} />
+    <h3 class="h3 m-4">Resultados Anual - 2025</h3>
   </div>
 </div>
   
