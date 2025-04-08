@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  // provider  = "postgresql"
+  provider  = "sqlite"
+  url       = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Satisfaction {
+  MuitoSatisfeito
+  Satisfeito
+  Neutro
+  Insatisfeito
+  MuitoInsatisfeito
+}
+
+/* @DateTime type handling
+* There currently is a bug that doesn't allow you to pass in DateTime values as strings
+* and produces a runtime error when you do. DateTime values need to be passed as Date
+* objects (i.e. new Date('2024-12-04') instead of '2024-12-04').
+*/
+model Review {
+  id        Int     @id @default(autoincrement())
+  qualidade Satisfaction?
+  cordialidade Int?
+  apresentacao Int?
+  temperatura Int?
+  sabor Int?
+  higiene Int?
+  comentario String?
+  timestamp DateTime @default(now())  // Check the note @DateTime
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  password String
+  name  String?
+}

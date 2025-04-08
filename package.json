@@ -2,6 +2,9 @@
   "name": "app",
   "version": "0.0.1",
   "private": true,
+  "prisma": {
+    "seed": "vite-node --options.transformMode.ssr='/.*/' prisma/seed.ts"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -13,7 +16,8 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "test:integration": "playwright test",
-    "test:unit": "vitest --typecheck"
+    "test:unit": "vitest --typecheck",
+    "seed": "vite-node --options.transformMode.ssr='/.*/' prisma/seed.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.28.1",
@@ -35,6 +39,7 @@
     "postcss": "8.4.47",
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.1.2",
+    "prisma": "^6.5.0",
     "svelte": "^4.2.7",
     "svelte-check": "^4.0.0",
     "tailwindcss": "3.4.13",
@@ -47,6 +52,7 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.11",
+    "@prisma/client": "^6.5.0",
     "app": "file:",
     "better-sqlite3": "^11.4.0",
     "chart.js": "^4.4.8",
