@@ -188,22 +188,47 @@
     plugins: {
       title: {
         display: true,
-        text: 'Indicadores - Janeiro/2025'
+        text: 'Indicadores - Janeiro/2025',
       },
       datalabels: {
         anchor: 'end',
         align: 'start',
-        offset: -5,
+        // offset: -5,
+        color: 'black',
+        labels: {
+          title: {
+            font: {
+              weight: 'bold',
+              size: 14,
+            },
+          },
+          /* value: {
+            color: 'green',
+            font: {
+              size: 16,
+            },
+          }, */
+        },
+        // textStrokeWidth: 0.7,
         formatter: (val, ctx) => {
-          console.log(`canvas width: ${ctx.chart.canvas.width}`);
-
+          // console.log(`canvas width: ${ctx.chart.canvas.width}`);
           const total = ctx.chart.data.datasets[0].data.reduce(
             (prev, curr) => (prev + curr)
           );
-          const percentual = (val / total * 100).toFixed(2);
-          return `${percentual}% (count: ${val})`;
+          const percentual = (val / total * 100).toFixed(1);
+          return `${percentual}% (${val})`;
         }
       },
+      /* legend: {
+        labels: {
+          color: 'red'
+        }
+      }, */
+      /* subtitle: {
+        display: true,
+        text: 'SUBTITLE'
+      }, */
+
     },
     responsive: true,
     scales: {
@@ -219,13 +244,14 @@
 <!-- <header>
 </header> -->
 <div class="flex justify-center">
-  <div class="h-[100vh] w-[100vw] lg:w-[80vw]">
-    <div class="w-[50vw]">
-      <h3 class="h3 m-4">Resultados Mensal - Janeiro/2025</h3>
+  <div class="h-[100vh] w-[100vw] bg-slate-400">
+    <!-- <div class="w-[60vw] md:w-[60vw]"> -->
+    <div class="">
+      <h3 class="h3 m-4">Resultado Mensal - Janeiro/2025</h3>
       <Pie data={csatData} options={csatOptions}/>
     </div>
     <Bar {data} {options} />
-    <h3 class="h3 m-4">Resultados Anual - 2025</h3>
+    <h3 class="h3 m-4">Resultado Anual - 2025</h3>
   </div>
 </div>
   

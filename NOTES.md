@@ -9,8 +9,8 @@
 - [x] Fix buggy form responses
 - [x] Verificar transições do formModal ao submeter o form
 - [x] Registro de timestamps nos reviews
-- [ ] Relatórios diários, mensais, anuais (web/pdf/dashboard?)
-- [ ] Implementação de backup de dados em cloud storage (?)
+- [~] Relatórios diários, mensais, anuais (web/pdf/dashboard?)
+- [~] Implementação de backup de dados em cloud storage (?)
 - [ ] Gerenciamento do db (acesso administrativo para leitura/backup/migração)
 - [ ] Segurança e autenticação do serviço
 - [ ] ~~Adicionar efeito de preenchimento ao hover dos ícones estrelas~~
@@ -19,7 +19,8 @@
 ### Modelo de Relatório
 
 RU UFPE
-Relatório Diário/Mensal/Anual - DD/MM/AA
+Title - "Relatório Diário/Mensal/Anual - DD/MM/AA
+Subtitle - "(contagem-de-reviews) reviews"
 
 Gráfico + Resultado CSAT:
 - **[CSAT %]** Evolução mensal/anual [Qualidade da refeição x Dia (+Contagem)] + Média mensal de cada nível de satisfação

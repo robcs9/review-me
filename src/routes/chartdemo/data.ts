@@ -120,7 +120,7 @@ export const reviews: ChartData = {
   ],
   datasets: [
     {
-      label: 'Nota 1/5',
+      label: 'Nota 1',
       data: [
         reviewsData.cordialidade[0],
         reviewsData.apresentacao[0],
@@ -131,7 +131,7 @@ export const reviews: ChartData = {
       backgroundColor: 'rgba(255, 134, 159,1)',
     },
     {
-      label: 'Nota 2/5',
+      label: 'Nota 2',
       data: [
         reviewsData.cordialidade[1],
         reviewsData.apresentacao[1],
@@ -142,7 +142,7 @@ export const reviews: ChartData = {
       backgroundColor: 'rgba(98, 182, 239,1)',
     },
     {
-      label: 'Nota 3/5',
+      label: 'Nota 3',
       data: [
         reviewsData.cordialidade[2],
         reviewsData.apresentacao[2],
@@ -153,7 +153,7 @@ export const reviews: ChartData = {
       backgroundColor: 'rgba(255, 218, 128,1)',
     },
     {
-      label: 'Nota 4/5',
+      label: 'Nota 4',
       data: [
         reviewsData.cordialidade[3],
         reviewsData.apresentacao[3],
@@ -164,7 +164,7 @@ export const reviews: ChartData = {
       backgroundColor: 'rgba(113, 205, 205,1)',
     },
     {
-      label: 'Nota 5/5',
+      label: 'Nota 5',
       data: [
         reviewsData.cordialidade[4],
         reviewsData.apresentacao[4],
