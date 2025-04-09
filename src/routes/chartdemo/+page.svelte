@@ -152,15 +152,37 @@
 <!-- Using svelte-chartjs (Alternative Wrapper): -->
 
 <script lang="ts">
+  import type { ChartOptions, ChartData } from 'chart.js';
   import { Bar, Pie } from 'svelte-chartjs';
-  import { Chart, registerables, type ChartOptions, } from 'chart.js';
+  import { Chart, registerables } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
   
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
   
-  const csatData = mockData.csatData;
+  const csatData: ChartData = {
+    labels: [
+      'Muito Insatisfeito', 'Insatisfeito',
+      'Neutro', 'Satisfeito', 'Muito Satisfeito'
+    ],
+    datasets: [
+      {
+        label: 'Respostas (n)',
+        // TO-DO: substituir com dados de prismamockdata.json e refatorar demais props
+        data: mockData.reviewsData.qualidade,
+        backgroundColor: [
+          'rgba(255, 134,159,1)',
+          'rgba(98,  182, 239,1)',
+          'rgba(255, 218, 128,1)',
+          'rgba(113, 205, 205,1)',
+          'rgba(170, 128, 252,1)',
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
+
   const reviewData = mockData.reviews;
   
   const csatOptions: ChartOptions = {
