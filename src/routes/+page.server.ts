@@ -9,9 +9,8 @@ export const load = (async ({ parent }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	
+
 	default: async ({ request }) => {
-		
 		const review: Review = {
 			qualidade: null,
 			apresentacao: null,

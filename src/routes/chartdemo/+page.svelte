@@ -156,17 +156,22 @@
   import { Chart, registerables, type ChartOptions, } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
-  // console.log(data1.data)
+  
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
+  
   const csatData = mockData.csatData;
   const reviewData = mockData.reviews;
-
+  
   const csatOptions: ChartOptions = {
     plugins: {
       title: {
         display: true,
         text: 'CSAT - Janeiro/2025',
+      },
+      subtitle: {
+        display: true,
+        text: `n avaliações`,
       },
       datalabels: {
         anchor: 'end',
@@ -243,7 +248,9 @@
   
   import type { PageData } from './$types';
   export let data: PageData;
-  console.dir(data.review);
+  
+  /* console.log('DB data:');
+  console.dir(data.review); */
 </script>
 <!-- <header>
 </header> -->

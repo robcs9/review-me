@@ -1,16 +1,22 @@
 import { PrismaClient } from '@prisma/client';
-import reviewData from "../src/lib/data.json" assert { type: "json" };
+import reviewData from "../src/lib/prismamockdata.json" assert { type: "json" };
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log(`Start seeding...`);
-
+  
   for (const r of reviewData.reviews) {
     const review = await prisma.review.create({
       data: {
+        qualidade: r.qualidade,
+        cordialidade: r.cordialidade,
+        apresentacao: r.apresentacao,
+        temperatura: r.temperatura,
+        sabor: r.sabor,
+        higiene: r.higiene,
         comentario: r.comentario,
-        timestamp: new Date()
+        // timestamp: new Date()
       }
     });
     console.log(`Created review with id: ${review.id}`);

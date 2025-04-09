@@ -9,6 +9,7 @@
 - [x] Fix buggy form responses
 - [x] Verificar transições do formModal ao submeter o form
 - [x] Registro de timestamps nos reviews
+- [~] Migração better-sqlite3 para Prisma ORM (postgres/sqlite)
 - [~] Relatórios diários, mensais, anuais (web/pdf/dashboard?)
 - [~] Implementação de backup de dados em cloud storage (?)
 - [ ] Gerenciamento do db (acesso administrativo para leitura/backup/migração)

@@ -15,14 +15,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum Satisfaction {
-  MuitoSatisfeito
-  Satisfeito
-  Neutro
-  Insatisfeito
-  MuitoInsatisfeito
-}
-
 /* @DateTime type handling
 * There currently is a bug that doesn't allow you to pass in DateTime values as strings
 * and produces a runtime error when you do. DateTime values need to be passed as Date
@@ -30,7 +22,7 @@ enum Satisfaction {
 */
 model Review {
   id            Int @id @default(autoincrement())
-  qualidade     Satisfaction?
+  qualidade     Int?
   cordialidade  Int?
   apresentacao  Int?
   temperatura   Int?
