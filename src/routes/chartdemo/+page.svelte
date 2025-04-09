@@ -160,7 +160,7 @@
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
   const csatData = mockData.csatData;
-  const data = mockData.reviews;
+  const reviewData = mockData.reviews;
 
   const csatOptions: ChartOptions = {
     plugins: {
@@ -240,6 +240,10 @@
       }
     }
   };
+  
+  import type { PageData } from './$types';
+  export let data: PageData;
+  console.dir(data.review);
 </script>
 <!-- <header>
 </header> -->
@@ -250,8 +254,7 @@
       <h3 class="h3 m-4">Resultado Mensal - Janeiro/2025</h3>
       <Pie data={csatData} options={csatOptions}/>
     </div>
-    <Bar {data} {options} />
-    <h3 class="h3 m-4">Resultado Anual - 2025</h3>
+    <Bar data={reviewData} {options} />
+    <!-- <h3 class="h3 m-4">Resultado Anual - 2025</h3> -->
   </div>
 </div>
-  

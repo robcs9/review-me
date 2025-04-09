@@ -39,3 +39,25 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Prisma
+
+### Sqlite
+
+Initial project setup
+
+```bash
+npx prisma init --datasource-provider sqlite
+```
+
+Creating the first database migration
+
+```bash
+npx prisma migrate dev --name init
+```
+
+Browse database data in Prisma Studio
+
+```bash
+npx prisma studio
+```
