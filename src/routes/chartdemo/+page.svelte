@@ -153,14 +153,41 @@
 
 <script lang="ts">
   import type { ChartOptions, ChartData } from 'chart.js';
-  import { Bar, Pie } from 'svelte-chartjs';
+  import type { PageData } from './$types';
+  import { Bar, Pie, Doughnut } from 'svelte-chartjs';
   import { Chart, registerables } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
   
+  export let data: PageData;
+  
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
   
+  function colorInverter(rgba: string) {
+    const MAX = 255;
+    const rgbaStrs = rgba.slice(5, -3).split(',');
+    const invertedRgba = rgbaStrs.map((el: string) => 255 - Number(el));
+    rgba = `rgba(${invertedRgba})`;
+
+    return rgba;
+  }
+
+  // Colors contrast
+  // https://colourcontrast.cc/
+  const csatColors = {
+    MUITOINSATISFEITO: [255, 134, 159],
+    INSATISFEITO: [98,  182, 239],
+    NEUTRO: [255, 218, 128],
+    SATISFEITO: [113, 205, 205],
+    MUITOSATISFEITO: [170, 128, 252],
+  }
+
+  // bg and txt colors are matched by index
+  const COLORS = {
+    bg: ['#ff869f'],
+    txt: ['#410000', ],
+  }
   const csatData: ChartData = {
     labels: [
       'Muito Insatisfeito', 'Insatisfeito',
@@ -168,49 +195,83 @@
     ],
     datasets: [
       {
-        label: 'Respostas (n)',
+        label: 'Respostas',
         // TO-DO: substituir com dados de prismamockdata.json e refatorar demais props
-        data: mockData.reviewsData.qualidade,
+        // data: mockData.reviewsData.qualidade,
+        data: data.reviews.datasets.qualidade,
         backgroundColor: [
-          'rgba(255, 134,159,1)',
-          'rgba(98,  182, 239,1)',
-          'rgba(255, 218, 128,1)',
-          'rgba(113, 205, 205,1)',
-          'rgba(170, 128, 252,1)',
+          `rgba(${csatColors.MUITOINSATISFEITO},1)`,
+          `rgba(${csatColors.INSATISFEITO},1)`,
+          `rgba(${csatColors.NEUTRO},1)`,
+          `rgba(${csatColors.SATISFEITO},1)`,
+          `rgba(${csatColors.MUITOSATISFEITO},1)`,
         ],
-        borderWidth: 2,
+        // borderWidth: 2,
+        // radius: 200
+        hoverOffset: 4,
       },
     ],
   };
-
-  const reviewData = mockData.reviews;
   
+  const currentMonth = data.reviews.month;
+  const reviewsCount = data.reviews.count;
   const csatOptions: ChartOptions = {
     plugins: {
       title: {
         display: true,
-        text: 'CSAT - Janeiro/2025',
+        text: `CSAT - ${currentMonth}/2025`,
+        font: {
+          size: '20em',
+          weight: 'bolder'
+        },
       },
       subtitle: {
         display: true,
-        text: `n avaliações`,
+        text: `${reviewsCount} Respostas`,
+        // color: 'black',
+        font: {
+          size: '16em',
+          weight: 'bolder'
+        },
       },
       datalabels: {
-        anchor: 'end',
-        align: 'end',
+        anchor: 'center',
+        align: 'center',
         offset: -40,
+        textAlign: 'center',
+        // textStrokeWidth: 1,
+        font: {
+          weight: 'bolder',
+          size: '16em',
+        },
+        // color: (ctx) => {
+        //   const bgColor = ctx.chart.data.datasets[0].backgroundColor[ctx.dataIndex];
+        //   return "#410000";
+        //   return colorInverter(bgColor);
+        // },
+        color: COLORS.txt,
+        // padding: 10,
         formatter: (val, ctx) => {
           const total = ctx.chart.data.datasets[0].data.reduce(
             (prev, curr) => (prev + curr)
           );
           const percentual = (val / total * 100).toFixed(2);
-          return `${percentual}%\n(count: ${val})`;
+          return `${percentual}%\n(${val})`;
         }
       },
+      legend: {
+        labels: {
+          font: {
+            size: '16em',
+            weight: 'bolder'
+          }
+        }
+      }
     },
     responsive: true,
   };
-
+  
+  const reviewData = mockData.reviews;
   const options: ChartOptions = {
     plugins: {
       title: {
@@ -268,20 +329,19 @@
     }
   };
   
-  import type { PageData } from './$types';
-  export let data: PageData;
   
-  /* console.log('DB data:');
-  console.dir(data.review); */
+  // console.log('DB data:');
+  // console.dir(data.review);
 </script>
 <!-- <header>
 </header> -->
 <div class="flex justify-center">
   <div class="h-[100vh] w-[100vw] bg-slate-400">
     <!-- <div class="w-[60vw] md:w-[60vw]"> -->
-    <div class="">
-      <h3 class="h3 m-4">Resultado Mensal - Janeiro/2025</h3>
-      <Pie data={csatData} options={csatOptions}/>
+    <div class="flex flex-col items-center">
+      <h3 class="h3 m-4">Resultado Mensal</h3>
+      <Doughnut data={csatData} options={csatOptions} />
+      <!-- <Pie data={csatData} options={csatOptions}/> -->
     </div>
     <Bar data={reviewData} {options} />
     <!-- <h3 class="h3 m-4">Resultado Anual - 2025</h3> -->

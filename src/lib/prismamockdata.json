@@ -1,13 +1,13 @@
 {
 	"reviews": [
 		{
-			"qualidade": 0,
+			"qualidade": 1,
 			"cordialidade": 1,
 			"apresentacao": 2,
 			"temperatura": 3,
 			"sabor": 4,
 			"higiene": 5,
-			"comentario": "migratition_test_review_comentario1"
+			"comentario": "migration_test_review_comentario1"
 		},
 		{
 			"qualidade": 1,
@@ -16,7 +16,7 @@
 			"temperatura": 4,
 			"sabor": 5,
 			"higiene": 0,
-			"comentario": "migratition_test_review_comentario2"
+			"comentario": "migration_test_review_comentario2"
 		},
 		{
 			"qualidade": 2,
@@ -25,7 +25,7 @@
 			"temperatura": 5,
 			"sabor": 0,
 			"higiene": 1,
-			"comentario": "migratition_test_review_comentario3"
+			"comentario": "migration_test_review_comentario3"
 		},
 		{
 			"qualidade": 3,
@@ -34,7 +34,7 @@
 			"temperatura": 0,
 			"sabor": 1,
 			"higiene": 2,
-			"comentario": "migratition_test_review_comentario4"
+			"comentario": "migration_test_review_comentario4"
 		},
 		{
 			"qualidade": 4,
@@ -43,7 +43,7 @@
 			"temperatura": 1,
 			"sabor": 2,
 			"higiene": 3,
-			"comentario": "migratition_test_review_comentario5"
+			"comentario": "migration_test_review_comentario5"
 		}
 	]
 }
