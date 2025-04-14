@@ -12,6 +12,7 @@
 - [~] Migração better-sqlite3 para Prisma ORM (postgres/sqlite)
 - [~] Relatórios diários, mensais, anuais (web/pdf/dashboard?)
 - [~] Implementação de backup de dados em cloud storage (?)
+- [ ] Renomear projeto review-me -> ufpe-ru-ratings
 - [ ] Gerenciamento do db (acesso administrativo para leitura/backup/migração)
 - [ ] Segurança e autenticação do serviço
 - [ ] ~~Adicionar efeito de preenchimento ao hover dos ícones estrelas~~
@@ -34,3 +35,7 @@ Gráficos em barra (média geral, % e quantidades dos itens respondidos)
 - Sabor/tempero dos alimentos
 - Limpeza/higiene em geral
 - Opiniões (exibir até 3 comentários recentes dos níveis Ruim, Regular e Excelente)
+
+### Misc
+
+https://colourcontrast.cc/

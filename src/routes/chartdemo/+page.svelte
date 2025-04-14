@@ -152,7 +152,7 @@
 <!-- Using svelte-chartjs (Alternative Wrapper): -->
 
 <script lang="ts">
-  import type { ChartOptions, ChartData } from 'chart.js';
+  import type { ChartOptions, ChartData, Plugin } from 'chart.js';
   import type { PageData } from './$types';
   import { Bar, Pie, Doughnut } from 'svelte-chartjs';
   import { Chart, registerables } from 'chart.js';
@@ -160,34 +160,63 @@
   import * as mockData from './data';
   
   export let data: PageData;
-  
+
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
-  
-  function colorInverter(rgba: string) {
-    const MAX = 255;
-    const rgbaStrs = rgba.slice(5, -3).split(',');
-    const invertedRgba = rgbaStrs.map((el: string) => 255 - Number(el));
-    rgba = `rgba(${invertedRgba})`;
 
-    return rgba;
-  }
-
-  // Colors contrast
-  // https://colourcontrast.cc/
   const csatColors = {
-    MUITOINSATISFEITO: [255, 134, 159],
-    INSATISFEITO: [98,  182, 239],
-    NEUTRO: [255, 218, 128],
-    SATISFEITO: [113, 205, 205],
-    MUITOSATISFEITO: [170, 128, 252],
+    MUITOINSATISFEITO: [255,134,159],
+    INSATISFEITO: [98,182,239],
+    NEUTRO: [255,218,128],
+    SATISFEITO: [113,205,205],
+    MUITOSATISFEITO: [170,128,252],
   }
-
   // bg and txt colors are matched by index
   const COLORS = {
-    bg: ['#ff869f'],
+    bg: [
+      '#ff869f','#62b6ef','#ffda80',
+      '#71cdcd','#aa80fc'
+    ],
     txt: ['#410000', ],
   }
+
+  const plugin: Plugin = {
+    id: 'customCanvasBackgroundColor',
+    beforeDraw: (chart, args, options) => {
+      const {ctx} = chart;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = options.color || '#99ffff';
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+  };
+  const customPlugin: Plugin = {
+    id: 'customCanvasBg',
+    beforeDraw: (chart) => {
+      if (image.complete) {
+        const ctx = chart.ctx;
+        const {top, left, width, height} = chart.chartArea;
+        const x = left + width / 2 - image.width / 2;
+        const y = top + height / 2 - image.height / 2;
+        ctx.drawImage(image, x, y);
+      } else {
+        image.onload = () => chart.draw();
+      }
+    }
+    /* 
+    id: 'customCanvasBackgroundColor',
+    beforeDraw: (chart, args, options) => {
+      const {ctx} = chart;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = options.color || '#99ffff';
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+   */
+  };
+
   const csatData: ChartData = {
     labels: [
       'Muito Insatisfeito', 'Insatisfeito',
@@ -196,9 +225,8 @@
     datasets: [
       {
         label: 'Respostas',
-        // TO-DO: substituir com dados de prismamockdata.json e refatorar demais props
-        // data: mockData.reviewsData.qualidade,
         data: data.reviews.datasets.qualidade,
+        // data: [1,2,3,4,5],
         backgroundColor: [
           `rgba(${csatColors.MUITOINSATISFEITO},1)`,
           `rgba(${csatColors.INSATISFEITO},1)`,
@@ -208,13 +236,13 @@
         ],
         // borderWidth: 2,
         // radius: 200
-        hoverOffset: 4,
+        // hoverOffset: 4,
       },
     ],
   };
-  
-  const currentMonth = data.reviews.month;
+  const currentMonth = data.reviews.MONTH;
   const reviewsCount = data.reviews.count;
+
   const csatOptions: ChartOptions = {
     plugins: {
       title: {
@@ -271,7 +299,75 @@
     responsive: true,
   };
   
-  const reviewData = mockData.reviews;
+
+  // const reviewDatasets = mockData.reviews;
+  const { qualidade: qualidadeDataset, ...reviewsDatasets } = data.reviews.datasets;
+  console.log('reviewsDatasets')
+  console.log(reviewsDatasets);
+  const reviewData: ChartData = {
+    labels: [
+      'Cordialidade da Equipe','Apresentação dos Pratos',
+      'Temperatura dos alimentos','Sabor dos alimentos','Limpeza/Higiene',
+    ],
+    datasets: [
+      {
+        label: 'Nota 1',
+        data: [
+          reviewsDatasets.cordialidade[0],
+          reviewsDatasets.apresentacao[0],
+          reviewsDatasets.temperatura[0],
+          reviewsDatasets.sabor[0],
+          reviewsDatasets.higiene[0],
+        ],
+        backgroundColor: 'rgba(255, 134, 159,1)',
+      },
+      {
+        label: 'Nota 2',
+        data: [
+          reviewsDatasets.cordialidade[1],
+          reviewsDatasets.apresentacao[1],
+          reviewsDatasets.temperatura[1],
+          reviewsDatasets.sabor[1],
+          reviewsDatasets.higiene[1],
+        ],
+        backgroundColor: 'rgba(98, 182, 239,1)',
+      },
+      {
+        label: 'Nota 3',
+        data: [
+          reviewsDatasets.cordialidade[2],
+          reviewsDatasets.apresentacao[2],
+          reviewsDatasets.temperatura[2],
+          reviewsDatasets.sabor[2],
+          reviewsDatasets.higiene[2],
+        ],
+        backgroundColor: 'rgba(255, 218, 128,1)',
+      },
+      {
+        label: 'Nota 4',
+        data: [
+          reviewsDatasets.cordialidade[3],
+          reviewsDatasets.apresentacao[3],
+          reviewsDatasets.temperatura[3],
+          reviewsDatasets.sabor[3],
+          reviewsDatasets.higiene[3],
+        ],
+        backgroundColor: 'rgba(113, 205, 205,1)',
+      },
+      {
+        label: 'Nota 5',
+        data: [
+          reviewsDatasets.cordialidade[4],
+          reviewsDatasets.apresentacao[4],
+          reviewsDatasets.temperatura[4],
+          reviewsDatasets.sabor[4],
+          reviewsDatasets.higiene[4],
+        ],
+        backgroundColor: 'rgba(170, 128, 252,1)',
+      },
+    ],
+  };
+  
   const options: ChartOptions = {
     plugins: {
       title: {
@@ -330,8 +426,7 @@
   };
   
   
-  // console.log('DB data:');
-  // console.dir(data.review);
+  const satisfaction = 0;
 </script>
 <!-- <header>
 </header> -->
@@ -339,11 +434,12 @@
   <div class="h-[100vh] w-[100vw] bg-slate-400">
     <!-- <div class="w-[60vw] md:w-[60vw]"> -->
     <div class="flex flex-col items-center">
-      <h3 class="h3 m-4">Resultado Mensal</h3>
+      <h2 class="h2 m-4">Resultado Mensal</h2>
       <Doughnut data={csatData} options={csatOptions} />
       <!-- <Pie data={csatData} options={csatOptions}/> -->
+      <h3 class="h3">Nível de Satisfação: { satisfaction }%</h3>
     </div>
-    <Bar data={reviewData} {options} />
+    <Bar data={reviewsDatasets} {options} />
     <!-- <h3 class="h3 m-4">Resultado Anual - 2025</h3> -->
   </div>
 </div>

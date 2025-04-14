@@ -44,6 +44,15 @@
 			"sabor": 2,
 			"higiene": 3,
 			"comentario": "migration_test_review_comentario5"
+		},
+		{
+			"qualidade": 5,
+			"cordialidade": 0,
+			"apresentacao": 1,
+			"temperatura": 2,
+			"sabor": 3,
+			"higiene": 4,
+			"comentario": "migration_test_review_comentario6"
 		}
 	]
 }
