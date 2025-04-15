@@ -154,6 +154,8 @@
 <script lang="ts">
   import type { ChartOptions, ChartData, Plugin } from 'chart.js';
   import type { PageData } from './$types';
+  // import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
   import { Bar, Pie, Doughnut } from 'svelte-chartjs';
   import { Chart, registerables } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -185,41 +187,62 @@
   export let data: PageData;
   const { 
     datasets: { qualidade: qualidadeDataset, ...reviewsDatasets },
-    MONTH: reviewsCount,
-    count: currentMonth 
+    MONTH: currentMonth,
+    count: reviewsCount 
   } = data.reviews;
-
+  const satisfaction = (
+    (qualidadeDataset[3] + qualidadeDataset[4]) / reviewsCount * 100
+  ).toFixed(2);
+  
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
   
-  const image = new Image();
-  image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
-  const customPlugin: Plugin = {
-    id: 'customCanvasBg',
-    beforeDraw: (chart) => {
-      if (image.complete) {
-        const ctx = chart.ctx;
-        const {top, left, width, height} = chart.chartArea;
-        const x = left + width / 2 - image.width / 2;
-        const y = top + height / 2 - image.height / 2;
-        ctx.drawImage(image, x, y);
-      } else {
-        image.onload = () => chart.draw();
-      }
-    }
-    /* 
+  // Draft plugin
+  const draftPlugin: Plugin = {
     id: 'customCanvasBackgroundColor',
     beforeDraw: (chart, args, options) => {
-      const {ctx} = chart;
+      // console.groupCollapsed('draftPlugin (id: customCanvasBg) logs');
+      const { ctx, chartArea: { top, left, width, height } } = chart;
+      const x = width / 2 - 36;
+      const y = height / 2 + top;
+      const csatText = `CSAT: ${satisfaction}%`;
+      const title = `Nível de Satisfação`;
+
+      ctx.font = "bold 1.5em sans-serif"
+      ctx.fillText(title, x - 60, y - 10);
+      ctx.fillText(csatText, x - 25, y + 20);
       ctx.save();
       ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = options.color || '#99ffff';
-      ctx.fillRect(0, 0, chart.width, chart.height);
+      // const boxAscent = ctx.measureText(customText).actualBoundingBoxAscent;
+      // const txtWidth = ctx.measureText(csatText).width;
+      // ctx.fillRect(x - 150, y - 150, width / 2, width / 2);
+      // ctx.fillRect(x - 10, y - 18, txtWidth + 18, 36);
       ctx.restore();
+      
     }
-   */
   };
-
+  // Inserts custom image in the center of the doughnut
+  onMount(() => {
+    const image = new Image();
+    image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
+    const customPlugin: Plugin = {
+      id: 'customCanvasBg',
+      beforeDraw: (chart) => {
+        if (image.complete) {
+          const ctx = chart.ctx;
+          const {top, left, width, height} = chart.chartArea;
+          const x = left + width / 2 - image.width / 2;
+          const y = top + height / 2 - image.height / 2;
+          ctx.drawImage(image, x, y);
+        } else {
+          image.onload = () => chart.draw();
+        }
+      },
+    };
+    // Enables plugin on all charts
+    // Chart.register(customPlugin);
+  });
 
   const csatData: ChartData = {
     labels: [
@@ -237,13 +260,12 @@
       },
     ],
   };
-  
 
   const csatOptions: ChartOptions = {
     plugins: {
       title: {
         display: true,
-        text: `CSAT - ${currentMonth}/2025`,
+        text: `Qualidade do RU - ${currentMonth}/2025`,
         font: {
           size: '20em',
           weight: 'bolder'
@@ -268,11 +290,6 @@
           weight: 'bolder',
           size: '16em',
         },
-        // color: (ctx) => {
-        //   const bgColor = ctx.chart.data.datasets[0].backgroundColor[ctx.dataIndex];
-        //   return "#410000";
-        //   return colorInverter(bgColor);
-        // },
         color: COLORS.txt,
         // padding: 10,
         formatter: (val, ctx) => {
@@ -281,7 +298,7 @@
           );
           const percentual = (val / total * 100).toFixed(2);
           return `${percentual}%\n(${val})`;
-        }
+        },
       },
       legend: {
         labels: {
@@ -290,15 +307,11 @@
             weight: 'bolder'
           }
         }
-      }
+      },
     },
     responsive: true,
   };
   
-
-  // const reviewDatasets = mockData.reviews;
-  console.log('reviewsDatasets')
-  console.log(reviewsDatasets);
   const reviewData: ChartData = {
     labels: [
       'Cordialidade da Equipe','Apresentação dos Pratos',
@@ -420,8 +433,6 @@
     }
   };
   
-  
-  const satisfaction = 0;
 </script>
 <!-- <header>
 </header> -->
@@ -430,11 +441,11 @@
     <!-- <div class="w-[60vw] md:w-[60vw]"> -->
     <div class="flex flex-col items-center">
       <h2 class="h2 m-4">Resultado Mensal</h2>
-      <Doughnut data={csatData} options={csatOptions} />
+      <Doughnut data={csatData} options={csatOptions} plugins={[draftPlugin]} />
       <!-- <Pie data={csatData} options={csatOptions}/> -->
       <h3 class="h3">Nível de Satisfação: { satisfaction }%</h3>
     </div>
-    <Bar data={reviewsDatasets} {options} />
+    <Bar data={reviewsDatasets} {options}/>
     <!-- <h3 class="h3 m-4">Resultado Anual - 2025</h3> -->
   </div>
 </div>
