@@ -159,18 +159,20 @@
   import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
   
-  export let data: PageData;
-
-  Chart.register(...registerables);
-  Chart.register(ChartDataLabels);
-
   const csatColors = {
     MUITOINSATISFEITO: [255,134,159],
     INSATISFEITO: [98,182,239],
     NEUTRO: [255,218,128],
     SATISFEITO: [113,205,205],
     MUITOSATISFEITO: [170,128,252],
-  }
+  };
+  const csatBgColors = [
+    `rgba(${csatColors.MUITOINSATISFEITO},1)`,
+    `rgba(${csatColors.INSATISFEITO},1)`,
+    `rgba(${csatColors.NEUTRO},1)`,
+    `rgba(${csatColors.SATISFEITO},1)`,
+    `rgba(${csatColors.MUITOSATISFEITO},1)`,
+  ];
   // bg and txt colors are matched by index
   const COLORS = {
     bg: [
@@ -178,19 +180,20 @@
       '#71cdcd','#aa80fc'
     ],
     txt: ['#410000', ],
-  }
-
-  const plugin: Plugin = {
-    id: 'customCanvasBackgroundColor',
-    beforeDraw: (chart, args, options) => {
-      const {ctx} = chart;
-      ctx.save();
-      ctx.globalCompositeOperation = 'destination-over';
-      ctx.fillStyle = options.color || '#99ffff';
-      ctx.fillRect(0, 0, chart.width, chart.height);
-      ctx.restore();
-    }
   };
+  
+  export let data: PageData;
+  const { 
+    datasets: { qualidade: qualidadeDataset, ...reviewsDatasets },
+    MONTH: reviewsCount,
+    count: currentMonth 
+  } = data.reviews;
+
+  Chart.register(...registerables);
+  Chart.register(ChartDataLabels);
+  
+  const image = new Image();
+  image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
   const customPlugin: Plugin = {
     id: 'customCanvasBg',
     beforeDraw: (chart) => {
@@ -217,6 +220,7 @@
    */
   };
 
+
   const csatData: ChartData = {
     labels: [
       'Muito Insatisfeito', 'Insatisfeito',
@@ -225,23 +229,15 @@
     datasets: [
       {
         label: 'Respostas',
-        data: data.reviews.datasets.qualidade,
-        // data: [1,2,3,4,5],
-        backgroundColor: [
-          `rgba(${csatColors.MUITOINSATISFEITO},1)`,
-          `rgba(${csatColors.INSATISFEITO},1)`,
-          `rgba(${csatColors.NEUTRO},1)`,
-          `rgba(${csatColors.SATISFEITO},1)`,
-          `rgba(${csatColors.MUITOSATISFEITO},1)`,
-        ],
+        data: qualidadeDataset,
+        backgroundColor: csatBgColors,
         // borderWidth: 2,
         // radius: 200
         // hoverOffset: 4,
       },
     ],
   };
-  const currentMonth = data.reviews.MONTH;
-  const reviewsCount = data.reviews.count;
+  
 
   const csatOptions: ChartOptions = {
     plugins: {
@@ -301,7 +297,6 @@
   
 
   // const reviewDatasets = mockData.reviews;
-  const { qualidade: qualidadeDataset, ...reviewsDatasets } = data.reviews.datasets;
   console.log('reviewsDatasets')
   console.log(reviewsDatasets);
   const reviewData: ChartData = {
