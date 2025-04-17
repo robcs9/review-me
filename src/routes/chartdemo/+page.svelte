@@ -1,156 +1,3 @@
-<!-- <script>
-  import { Bar } from 'svelte-chartjs';
-  import { data } from './data';
-
-  import {
-    Chart,
-    Title,
-    Tooltip,
-    Legend,
-    BarElement,
-    CategoryScale,
-    LinearScale,
-  } from 'chart.js';
-
-  Chart.register(
-    Title,
-    Tooltip,
-    Legend,
-    BarElement,
-    CategoryScale,
-    LinearScale
-  );
-</script>
-
-<Bar {data} options={{ responsive: true }} />
- -->
-
-<!-- Single File Component -->
-<!-- Chart.svelte -->
-<!-- <script>
-  import { onMount } from 'svelte';
-  import Chart from 'chart.js/auto';
-
-  let chartCanvas;
-
-  onMount(() => {
-    const ctx = chartCanvas.getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green'],
-        datasets: [{
-          label: 'Colors',
-          data: [12, 19, 3, 5],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
-          ]
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  });
-</script>
-
-<canvas bind:this={chartCanvas}></canvas>
-
-<style>
-  canvas {
-    max-width: 600px;
-    margin: 20px;
-  }
-</style> -->
-
-<!-- With Reactive Data -->
-<!-- <script>
-  import { onMount, onDestroy } from 'svelte';
-  import Chart from 'chart.js/auto';
-
-  let chartCanvas;
-  let chart;
-  let dataPoints = [12, 19, 3, 5];
-
-  // Reactive statement to update chart when data changes
-  $: if (chart) {
-    chart.data.datasets[0].data = dataPoints;
-    chart.update();
-  }
-
-  onMount(() => {
-    chart = new Chart(chartCanvas, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr'],
-        datasets: [{
-          label: 'Sales',
-          data: dataPoints,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      }
-    });
-  });
-
-  onDestroy(() => {
-    if (chart) chart.destroy();
-  });
-
-  function addData() {
-    dataPoints = [...dataPoints, Math.floor(Math.random() * 20)];
-    console.log(dataPoints)
-  }
-</script>
-
-<canvas bind:this={chartCanvas}></canvas>
-<button on:click={addData}>Add Data</button> -->
-
-<!-- Using with SvelteKit (TypeScript version): -->
-<!-- +page.svelte -->
-<!-- <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-  import Chart from 'chart.js/auto';
-  import type { ChartConfiguration } from 'chart.js';
-
-  let chartCanvas: HTMLCanvasElement;
-  let chart: Chart;
-
-  const config: ChartConfiguration = {
-    type: 'pie',
-    data: {
-      labels: ['A', 'B', 'C'],
-      datasets: [{
-        data: [300, 50, 100],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
-        ]
-      }]
-    }
-  };
-
-  onMount(() => {
-    chart = new Chart(chartCanvas, config);
-  });
-
-  onDestroy(() => {
-    if (chart) chart.destroy();
-  });
-</script>
-
-<canvas bind:this={chartCanvas}></canvas> -->
-
-<!-- Using svelte-chartjs (Alternative Wrapper): -->
-
 <script lang="ts">
   import type { ChartOptions, ChartData, Plugin } from 'chart.js';
   import type { PageData } from './$types';
@@ -160,29 +7,7 @@
   import { Chart, registerables } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
   import * as mockData from './data';
-  
-  const csatColors = {
-    MUITOINSATISFEITO: [255,134,159],
-    INSATISFEITO: [98,182,239],
-    NEUTRO: [255,218,128],
-    SATISFEITO: [113,205,205],
-    MUITOSATISFEITO: [170,128,252],
-  };
-  const csatBgColors = [
-    `rgba(${csatColors.MUITOINSATISFEITO},1)`,
-    `rgba(${csatColors.INSATISFEITO},1)`,
-    `rgba(${csatColors.NEUTRO},1)`,
-    `rgba(${csatColors.SATISFEITO},1)`,
-    `rgba(${csatColors.MUITOSATISFEITO},1)`,
-  ];
-  // bg and txt colors are matched by index
-  const COLORS = {
-    bg: [
-      '#ff869f','#62b6ef','#ffda80',
-      '#71cdcd','#aa80fc'
-    ],
-    txt: ['#410000', ],
-  };
+  import { MONTHS, COLORS, buildCsatPlugin, csatColors, csatBgColors } from '$lib/utils/chartUtils';
   
   export let data: PageData;
   const { 
@@ -190,59 +15,12 @@
     MONTH: currentMonth,
     count: reviewsCount 
   } = data.reviews;
-  const satisfaction = (
-    (qualidadeDataset[3] + qualidadeDataset[4]) / reviewsCount * 100
+  const satisfaction = ((
+    qualidadeDataset[3] + qualidadeDataset[4]) / reviewsCount * 100
   ).toFixed(2);
   
   Chart.register(...registerables);
   Chart.register(ChartDataLabels);
-  
-  // Draft plugin
-  const draftPlugin: Plugin = {
-    id: 'customCanvasBackgroundColor',
-    beforeDraw: (chart, args, options) => {
-      // console.groupCollapsed('draftPlugin (id: customCanvasBg) logs');
-      const { ctx, chartArea: { top, left, width, height } } = chart;
-      const x = width / 2 - 36;
-      const y = height / 2 + top;
-      const csatText = `CSAT: ${satisfaction}%`;
-      const title = `Nível de Satisfação`;
-
-      ctx.font = "bold 1.5em sans-serif"
-      ctx.fillText(title, x - 60, y - 10);
-      ctx.fillText(csatText, x - 25, y + 20);
-      ctx.save();
-      ctx.globalCompositeOperation = 'destination-over';
-      ctx.fillStyle = options.color || '#99ffff';
-      // const boxAscent = ctx.measureText(customText).actualBoundingBoxAscent;
-      // const txtWidth = ctx.measureText(csatText).width;
-      // ctx.fillRect(x - 150, y - 150, width / 2, width / 2);
-      // ctx.fillRect(x - 10, y - 18, txtWidth + 18, 36);
-      ctx.restore();
-      
-    }
-  };
-  // Inserts custom image in the center of the doughnut
-  onMount(() => {
-    const image = new Image();
-    image.src = 'https://www.chartjs.org/img/chartjs-logo.svg';
-    const customPlugin: Plugin = {
-      id: 'customCanvasBg',
-      beforeDraw: (chart) => {
-        if (image.complete) {
-          const ctx = chart.ctx;
-          const {top, left, width, height} = chart.chartArea;
-          const x = left + width / 2 - image.width / 2;
-          const y = top + height / 2 - image.height / 2;
-          ctx.drawImage(image, x, y);
-        } else {
-          image.onload = () => chart.draw();
-        }
-      },
-    };
-    // Enables plugin on all charts
-    // Chart.register(customPlugin);
-  });
 
   const csatData: ChartData = {
     labels: [
@@ -260,62 +38,11 @@
       },
     ],
   };
-
-  const csatOptions: ChartOptions = {
-    plugins: {
-      title: {
-        display: true,
-        text: `Qualidade do RU - ${currentMonth}/2025`,
-        font: {
-          size: '20em',
-          weight: 'bolder'
-        },
-      },
-      subtitle: {
-        display: true,
-        text: `${reviewsCount} Respostas`,
-        // color: 'black',
-        font: {
-          size: '16em',
-          weight: 'bolder'
-        },
-      },
-      datalabels: {
-        anchor: 'center',
-        align: 'center',
-        offset: -40,
-        textAlign: 'center',
-        // textStrokeWidth: 1,
-        font: {
-          weight: 'bolder',
-          size: '16em',
-        },
-        color: COLORS.txt,
-        // padding: 10,
-        formatter: (val, ctx) => {
-          const total = ctx.chart.data.datasets[0].data.reduce(
-            (prev, curr) => (prev + curr)
-          );
-          const percentual = (val / total * 100).toFixed(2);
-          return `${percentual}%\n(${val})`;
-        },
-      },
-      legend: {
-        labels: {
-          font: {
-            size: '16em',
-            weight: 'bolder'
-          }
-        }
-      },
-    },
-    responsive: true,
-  };
   
   const reviewData: ChartData = {
     labels: [
-      'Cordialidade da Equipe','Apresentação dos Pratos',
-      'Temperatura dos alimentos','Sabor dos alimentos','Limpeza/Higiene',
+      'Cordialidade','Apresentação',
+      'Temperatura','Sabor','Limpeza / Higiene',
     ],
     datasets: [
       {
@@ -376,16 +103,65 @@
     ],
   };
   
-  const options: ChartOptions = {
+  const csatOptions: ChartOptions = {
     plugins: {
       title: {
         display: true,
-        text: 'Indicadores - Janeiro/2025',
+        text: `Satisfação dos Frequentadores do RU - ${MONTHS[currentMonth]} de 2025`,
+        font: {
+          size: '20em',
+          weight: 'bolder'
+        },
+      },
+      datalabels: {
+        anchor: 'center',
+        align: 'center',
+        offset: -40,
+        textAlign: 'center',
+        // textStrokeWidth: 1,
+        font: {
+          weight: 'bolder',
+          size: '16em',
+        },
+        color: COLORS.txt,
+        // padding: 10,
+        formatter: (val, ctx) => {
+          const total = ctx.chart.data.datasets[0].data.reduce(
+            (prev, curr) => (prev + curr)
+          );
+          const percentual = (val / total * 100).toFixed(2);
+          return `${percentual}%\n(${val})`;
+        },
+      },
+      legend: {
+        labels: {
+          font: {
+            size: '16em',
+            weight: 'bolder',
+          },
+          padding: 20
+        },
+      },
+    },
+    responsive: true,
+  };
+
+  const options: ChartOptions = {
+    plugins: {
+      title: {
+        display: false,
+        text: 'Indicadores - /2025',
+        font: {
+          size: '20em',
+          weight: 'bolder'
+        },
+      },
+      legend: {
+        display: false,
       },
       datalabels: {
         anchor: 'end',
         align: 'start',
-        // offset: -5,
         color: 'black',
         labels: {
           title: {
@@ -411,16 +187,6 @@
           return `${percentual}% (${val})`;
         }
       },
-      /* legend: {
-        labels: {
-          color: 'red'
-        }
-      }, */
-      /* subtitle: {
-        display: true,
-        text: 'SUBTITLE'
-      }, */
-
     },
     responsive: true,
     scales: {
@@ -432,20 +198,35 @@
       }
     }
   };
-  
+
 </script>
 <!-- <header>
 </header> -->
-<div class="flex justify-center">
-  <div class="h-[100vh] w-[100vw] bg-slate-400">
-    <!-- <div class="w-[60vw] md:w-[60vw]"> -->
-    <div class="flex flex-col items-center">
-      <h2 class="h2 m-4">Resultado Mensal</h2>
-      <Doughnut data={csatData} options={csatOptions} plugins={[draftPlugin]} />
-      <!-- <Pie data={csatData} options={csatOptions}/> -->
-      <h3 class="h3">Nível de Satisfação: { satisfaction }%</h3>
-    </div>
-    <Bar data={reviewsDatasets} {options}/>
+<div class="flex flex-col items-center">
+  <h2 class="h2 mt-4">Análise das Avaliações Recebidas</h2>
+  <!-- <h3 class="h3">({ reviewsCount } respostas contabilizadas)</h3> -->
+  <!-- <div class="h-[100vh] w-[100vw] bg-slate-400"> -->
+    <div class="w-[30em] lg:w-[50vw] xl:w-[60vw] xl:text-xl bg-orange-100 p-4">
+      <div class="flex flex-col items-center gap-2">
+        <Doughnut data={ csatData } options={ csatOptions } plugins={ [buildCsatPlugin(satisfaction)] } />
+        <!-- <h3 class="h3">Nível de Satisfação: { satisfaction }%</h3> -->
+        <Bar data={ reviewData } { options }/>
+        <h4 class="h4 text-neutral-700 py-2">
+          Total de respostas neste mês: { reviewsCount }
+        </h4>
+      </div>
+      <p class="text-neutral-700">
+        Indicadores apresentados:<br/>
+      </p>
+      <ul class="list-disc list-inside text-neutral-700">
+        <li>Cordialidade da Equipe</li>
+        <li>Apresentação dos Pratos</li>
+        <li>Temperatura dos alimentos</li>
+        <li>Sabor dos alimentos</li>
+        <li>Limpeza / Higiene</li>
+      </ul>
+      
     <!-- <h3 class="h3 m-4">Resultado Anual - 2025</h3> -->
+    <!-- Evolução Mensal dos resultados -->
   </div>
 </div>
